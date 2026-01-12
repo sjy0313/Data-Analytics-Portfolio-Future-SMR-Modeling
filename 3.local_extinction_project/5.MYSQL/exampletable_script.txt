@@ -1,0 +1,52 @@
+-- 테이블 생성,수정,삭제
+
+
+-- 테이블 생성
+CREATE TABLE example(
+    name VARCHAR(10),
+    phone VARCHAR(15),
+    id VARCHAR(10),
+    city VARCHAR(10)
+);
+
+-- 테이블 목록 보기
+SHOW TABLES;
+
+-- 데이터 추가 
+insert into example values('홍길동', '010-1234-5678', '1010', '한양');
+insert into example values('전우치', '010-4242-5252', '3030', '을릉도');
+insert into example values('강감찬', '010-4050-4050', '4040', '개성');
+-- 데이터 조회
+SELECT * FROM example;
+
+-- 테이블 구조 변경 
+-- 컬럼 추가 : email
+alter table example add email varchar(20);
+alter table example add enamil varchar(20);
+
+desc example;
+
+-- 컬럼삭제"
+alter table example drop enamil;
+
+alter table example change phone hp varchar(15);
+
+-- 전체 컬럼에 값을 지정하지 않으면 컬럼명을 명시해야 한다.
+-- insert into example values('이성계', '한양');
+
+insert into example (name,city) values('이성계', '한양');
+commit;
+
+-- 검색 컬럼지정
+select name, city from example; 
+-- 검색 컬럼지정
+select name,city from example where hp is null; -- 전화번호가 없는 사람 
+select name,city from example where hp is not null; -- 전화번호가 있는 사람 
+
+-- 입력 데이터 변경 및 삭제 
+update example set city='충북' where name='홍길동';
+-- 홍길동의 거주 도시 충북으로 변경
+
+-- 데이터 변경 확인하기
+select * from example;
+

@@ -1,0 +1,20 @@
+한국 은행의 소비자 심리지수 
+https://www.bok.or.kr/portal/bbs/P0002253/list.do?menuNo=200480
+닥터아파트와 같은 민간기업의 주택가격전망지수
+
+통계청의 소비자 기대지수
+
+부동산 구입 계획심리지수
+
+다양한 소비자 심리지수 중 어떤 변수들이 보다 많은 설명력을 제공하는지 분석.
+
+https://m.blog.naver.com/microelectro/223255540311
+지역 별 주택구입부담지수
+https://houstat.hf.go.kr/research/portal/theme/indexStatPage.do#tab_khai
+PIR and LIR
+https://houstat.hf.go.kr/research/portal/stat/easyStatPage.do
+
+plotly studio
+https://wikidocs.net/185317
+
+https://plotly.com/python/chart-studio/

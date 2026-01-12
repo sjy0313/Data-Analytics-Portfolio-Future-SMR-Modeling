@@ -1,0 +1,5 @@
+ jupyter notebook --notebook-dir="D:\WORKSPACE\github\MYSELF24\Python\Plotly"
+ 
+ pip install chart_studio 
+pip install plotly==5.11.0
+> pip install kaleido [그림파일 추출 시]

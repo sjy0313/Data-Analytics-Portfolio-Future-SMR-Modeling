@@ -1,0 +1,5 @@
+[DBeaver에서 MySQL 연결시 문제]
+오류: "Public Key Retrieval is not allowed" 
+
+allowPublicKeyRetrieval=true
+useSSL=false

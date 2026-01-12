@@ -1,0 +1,19 @@
+
+MYSQL 에서 table 생성 
+csv 파일 데이터 불러오기 
+c드라이브 
+C:\MySQL\8.4\Data\Uploads\csvfd
+uploads 폴더에 해당 csv 폴더옮겨놓기
+
+use infrastructure;
+
+create table City(
+	Io_Date varchar(10),         
+	inflow_total int(7) Not null,       
+	outflow_total int(7) Not null,             
+	net_movement int(7) Not null,   
+	primary key (Io_Date)
+);
+show variables like 'secure_file_priv';
+load data infile 'C:/MySQL/8.4/Data/Uploads/csvfd/Busan_mv.csv' into table City fields terminated by ',';
+

@@ -1,0 +1,12 @@
+다중공선성
+https://sseozytank.tistory.com/54
+주성분분석
+https://velog.io/@eodud0582/Principal-Component-Analysis-PCA
+머신러닝의 종류
+https://m.blog.naver.com/cslee_official/222233077061
+통계청 데이터 선택 기준
+https://www.google.com/search?q=%EC%A1%B0%EC%82%AC%ED%86%B5%EA%B3%84%EC%9D%98+%EC%A0%95%ED%99%95%EC%84%B1%EC%A7%80%ED%91%9C+%ED%92%88%EC%A7%88%EA%B4%80%EB%A6%AC+%EB%A7%A4%EB%89%B4%EC%96%BC&oq=%EC%A1%B0%EC%82%AC%ED%86%B5%EA%B3%84%EC%9D%98+%EC%A0%95%ED%99%95%EC%84%B1%EC%A7%80%ED%91%9C+%ED%92%88%EC%A7%88%EA%B4%80%EB%A6%AC+%EB%A7%A4%EB%89%B4%EC%96%BC&gs_lcrp=EgZjaHJvbWUyBggAEEUYOTIKCAEQABiABBiiBDIKCAIQABiiBBiJBTIKCAMQABiABBiiBNIBBzQ3OWowajeoAgCwAgA&sourceid=chrome&ie=UTF-8
+전진선택과 후진선택
+https://yngie-c.github.io/machine%20learning/2020/09/06/fs_be/
+stepwise
+https://blog.naver.com/jaehong7719/221909615639

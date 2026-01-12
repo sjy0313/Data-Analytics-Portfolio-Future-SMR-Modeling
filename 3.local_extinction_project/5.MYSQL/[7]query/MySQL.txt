@@ -1,0 +1,30 @@
+[MySQL]
+
+https://dev.mysql.com/downloads/file/?id=526927
+MySQL Community Server 8.4.0 LTS
+
+Version: 8.4
+Data Directory: C:\ProgramData\MySQL\MySQL Server 8.4\
+Connectivity:
+	TCP/IP Port:3306, X Protocol Port: 33060
+
+Account and Roles
+MySQL Root Password: solsql
+
+Windows Service Name: MySQL84
+
+(MySQL Workbench)
+https://dev.mysql.com/downloads/workbench/
+
+
+(Database)
+create database hellodb default character set utf8 collate utf8_general_ci;
+show databases;
+use hellodb;
+
+create table hello (
+	hid integer,
+	name varchar(40),
+	age integer);
+
+drop database hellodb;

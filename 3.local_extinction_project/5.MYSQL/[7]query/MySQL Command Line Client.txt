@@ -1,0 +1,18 @@
+
+Path: C:\MySQL\MySQL Server 8.4\bin
+
+MySQL Command Line Client
+cmd> mysql -u root -p
+
+한글 SETUP 상태 확인
+mysql> show variables like 'char%';
+
+사용자 확인
+use mysql;
+select user, host from user;
+
+사용자 삭제
+delete from user where user='userid';
+flush privileges;
+
+show grants for 'root@localhost';
