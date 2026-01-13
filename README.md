@@ -25,7 +25,7 @@ I focus on deriving actionable insights through rigorous statistical analysis an
 * **Key Results:**
     * Identified a surge in "Self-help" and "Psychology" book sales, correlating with the social phenomenon of "Corona Blue."
     * Provided data-driven marketing insights for online bookstores.
-* **Tech:** `Python(pandas/Numpy)`, `PowerBI`, `Text Mining`
+* **Tech:** `Python(pandas/Numpy/Selenium)`, `PowerBI`
 
 ![Consumer Trend PowerBI]
 <img width="2198" height="1244" alt="Consumer_trend_PowerBI" src="https://github.com/user-attachments/assets/1fa4a2f7-5749-48e9-a6de-6eef1db61357" />
@@ -36,12 +36,13 @@ I focus on deriving actionable insights through rigorous statistical analysis an
 * **Summary:** Investigated the correlation between housing transaction indices and urban infrastructure (schools, hospitals) using spatial big data.
 * **Applied Mathematics & Statistics Connection:**
     * **Regression Analysis:** Built linear regression models to quantify the relationship between infrastructure accessibility and housing prices.
-    * **Model Evaluation:** assessed model performance using **R-squared**, **MSE (Mean Squared Error)**, **PCA**,**Confusion Matrix",  metrics to validate predictive power.
+                            **PCA(Principal Component Analysis)**,**Confusion Matrix", "One-hot encoding"  metrics to validate predictive power.
+    * **Model Evaluation:** assessed model performance using **R-squared**, **MSE (Mean Squared Error)**, 
     * **Spatial Statistics:** Analyzed spatial distribution patterns of wealth and infrastructure.
 * **Key Results:**
     * **R² = 0.968**: Proved a strong positive correlation between infrastructure density and housing prices.
     * Visualized the "Polarization" phenomenon where resources are heavily concentrated in specific urban clusters (Sejong/Daejeon).
-* **Tech:** `Python`, `Spatial Analysis`, `Regression Modeling`
+* **Tech:** `Python(Tensorflow/scipy/matplotlib/plotly`, `Spatial Analysis`, `Regression Modeling`, 'MySQL'
 
 ![Urban Polarization Result](./Images/urban_polarization_map.png)
 *(Please insert your map visualization or regression graph here)*
