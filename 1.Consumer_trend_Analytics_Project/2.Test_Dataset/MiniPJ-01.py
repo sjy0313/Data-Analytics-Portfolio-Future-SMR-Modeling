@@ -7,27 +7,27 @@ Created on Fri Apr  5 22:49:34 2024
 
 import pandas as pd
 
-# 엑셀 파일 불러오기
+# Import Excel file
 df = pd.read_excel("./data/bestseller_books_2023.xlsx")
 
-# "genre" 열의 유일한 값을 추출하여 종류 파악
+# Determine the type by extracting the unique value of the “genre” column
 genres = df["분야"].unique()
 print(len(genres)) # 20
  
 from selenium.webdriver import Chrome
 from bs4 import BeautifulSoup 
 
-driver = Chrome() # 옵션을 지정해 크롬 드라이버의 객체 생성
+driver = Chrome() # Create an object of Chrome Driver by specifying options
 
-url = "https://product.kyobobook.co.kr/bestseller/total?period=004#?page=1&per=20&period=004&ymw=&bsslBksClstCode=A" # URL 지정
-driver.get(url)                    # 웹 브라우저를 실행해 지정한 URL에 접속
-driver.implicitly_wait(3)          # 웹 사이트의 내용을 받아오기까지 기다림
+url = "https://product.kyobobook.co.kr/bestseller/total?period=004# ?page =1&per=20&perd=004&04 &mw=&bsslBkstCode=A" # URL .
+driver.get(url)                    # Launch a web browser and access the specified URL.
+driver.implicitly_wait(3)          # Wait for website content to be received
 
-html = driver.page_source          # 접속 후에 해당 page의 HTML 코드를 가져옴
-soup = BeautifulSoup(html, 'lxml') # HTML 코드를 파싱함
+html = driver.page_source          # After connecting, retrieve the HTML code of the page.
+soup = BeautifulSoup(html, 'lxml') # Parse HTML code
 
-print("- 접속한 웹 사이트의 제목:", driver.title) # 접속한 웹 사이트의 제목 출력
-print("- 접속한 웹 사이트의 URL:", driver.current_url) # 접속한 웹 사이트의 URL 출력
+print("- 접속한 웹 사이트의 제목:", driver.title) # Print the title of the accessed website
+print("- 접속한 웹 사이트의 URL:", driver.current_url) # Print the URL of the accessed website
 
 soup1 = BeautifulSoup(html, 'html.parser')
 soup2 = soup.find_all(attrs = {'class':"prod_item"})

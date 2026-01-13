@@ -37,7 +37,7 @@ csv_file_paths = []
 for list_city in city_mv:
     
     df = pd.read_excel(f"D:/WORKSPACE/github/MYSELF24/Python/MiniProject-May/city/{list_city}.xlsx")  
-    #csv 파일로 변환시 10월에 0이 삭제되어 1 중복 데이터 2개 방지 위해 x + 0
+    # When converting to a csv file, 0 in October is deleted and x + 0 to prevent 2 duplicate data.
     df['Date'] = df['Date'].astype(str).map(lambda x: x + '0' if len(x) < 7 else x)
     csv_file_path = f"D:/WORKSPACE/github/MYSELF24/Python/MiniProject-May/city//csvfd/{list_city}.csv"
     df.to_csv(csv_file_path, index=False, header=False)

@@ -39,8 +39,8 @@ conn = st.connection("extinction")
 df = conn.query("SELECT * FROM extinction.cofog_health")
 st.dataframe(df)
 #%%
-#.streamlit 폴더 안에 secrets.toml 파일을 생성합니다.
-#secrets.toml 파일에 데이터베이스 연결 정보를 아래와 같이 추가
+# Create a secrets.toml file inside the .streamlit folder.
+# Add database connection information to the secrets.toml file as follows
 #[connections.extinction]
 host = "localhost"
 port = "3306"
@@ -52,10 +52,10 @@ import streamlit as st
 import pandas as pd
 import pymysql
 
-# secrets.toml 파일의 정보를 가져옴
+# Get information from secrets.toml file
 connection_details = st.secrets["connections"]["extinction"]
 
-# 데이터베이스 연결 설정
+# Database connection settings
 connection = pymysql.connect(
     host=connection_details["host"],
     user=connection_details["username"],
@@ -64,10 +64,10 @@ connection = pymysql.connect(
     port=int(connection_details["port"])
 )
 
-# 쿼리 실행
+# Query execution
 query = "SELECT * FROM extinction.cofog_health"
 df = pd.read_sql(query, connection)
 
-# 데이터프레임 표시
+# Display data frame
 st.dataframe(df)
 

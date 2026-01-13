@@ -6,21 +6,21 @@ Created on Mon Jul 29 10:10:40 2024
 """
 
 import pandas as pd
-# 보건
+# health
 df = pd.read_excel("C:/Users/Shin/Documents/Final_Project/Mysql/data/health.xlsx")  
 
 csv_file_path = "C:/Users/Shin/Documents/Final_Project/Mysql/data/health.csv"
 df.to_csv(csv_file_path, index=False, header=False)
 print(csv_file_path)
 #%%
-# 교육
+# education
 df = pd.read_excel("C:/Users/Shin/Documents/Final_Project/Data/교육_전국/교육_연도별_전국통합/교육/교육종합_v0.2.xlsx")  
 csv_file_path = "C:/Users/Shin/Documents/Final_Project/Data/교육_전국/교육_연도별_전국통합/교육/education.csv"
 df.to_csv(csv_file_path, index=False, header=False)
 print(csv_file_path)
 
 #%%
-# 등급종합
+# Grade summary
 df3 = pd.read_excel("C:/Users/Shin/Documents/Final_Project/Mysql/data/등급.xlsx")  
 csvfile = "C:/Users/Shin/Documents/Final_Project/Mysql/data/grade.csv"
 df3.to_csv(csvfile, index=False, header=False)
@@ -50,17 +50,17 @@ df1.to_csv(csv_file_path, index=False, header=False)
 print(csv_file_path)
 '''
 #%%
-# 행정
+# administration
 df4 = pd.read_excel("C:/Users/Shin/Documents/Final_Project/Mysql/data/excel/행정_종합_2015~2021_v1.xlsx") 
 csvfile = "C:/Users/Shin/Documents/Final_Project/Mysql/data/administration.csv"
 df4.to_csv(csvfile, index=False, header=False)
 
-# 교통
+# traffic
 df5 = pd.read_excel("C:/Users/Shin/Documents/Final_Project/Mysql/data/excel/교통_2015~2021_전국_종합_v1.xlsx") 
 csvfile = "C:/Users/Shin/Documents/Final_Project/Mysql/data/traffic.csv"
 df5.to_csv(csvfile, index=False, header=False)
 #%%
-# 주거, 교통
+# housing, transportation
 import pandas as pd
 
 # Load the data
@@ -96,7 +96,7 @@ df8.to_csv(csvfile1, index=False, header=False)
 
 
 #%%
-# 사회보호
+# social protection
 df8 = pd.read_excel("C:/Users/Shin/Documents/Final_Project/Mysql/data/excel/사회보호.xlsx")
 
 csvfile = "C:/Users/Shin/Documents/Final_Project/Mysql/data/csv/socialprotection.csv"
@@ -107,14 +107,14 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.metrics import accuracy_score
 import lightgbm as lgb
 
-# GBM 모델
+# GBM model
 gbm = GradientBoostingClassifier(n_estimators=100, learning_rate=0.1, max_depth=3)
 gbm.fit(X_train, y_train)
 y_pred_gbm = gbm.predict(X_test)
 accuracy_gbm = accuracy_score(y_test, y_pred_gbm)
 print(f"GBM Accuracy: {accuracy_gbm:.4f}")
 
-# LightGBM 모델
+# LightGBM model
 lgbm = lgb.LGBMClassifier(n_estimators=100, learning_rate=0.1, max_depth=3)
 lgbm.fit(X_train, y_train)
 y_pred_lgbm = lgbm.predict(X_test)

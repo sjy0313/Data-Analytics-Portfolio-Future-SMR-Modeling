@@ -4,7 +4,7 @@ Created on Fri Jun 28 09:11:55 2024
 
 @author: Shin
 """
-# 최고가 + 최저가 아파트 정보 통합  
+# Highest price + lowest price apartment information integrated
 import pandas as pd
 df1= pd.read_excel("D:/WORKSPACE/github/MYSELF24/Python/MiniProject-May/Excel/Seoul_city.xlsx")
 df2= pd.read_excel("D:/WORKSPACE/github/MYSELF24/Python/MiniProject-May/Excel/Seoul_city_w.xlsx")
@@ -22,10 +22,10 @@ max    981.00000      1712.000000  ...  3000.000000            3.950000e+09'''
 
 apartment = pd.concat([df1, df2], axis=0, ignore_index = True)
 df_byprice = apartment.sort_values(by = 'transaction price(won)', ascending = False)
-# 아파트 정보
+# Apartment information
 apartment_info_df = df_byprice.select_dtypes(include='object')
 #%%
-# 숫자형 데이터 타입을 가진 열들로만 dataframe 생성 : 
+# Create a dataframe with only columns that have numeric data types:
 
 numeric_df = df_byprice.select_dtypes(include='number')
 seoul_apartment = numeric_df.quantile([0.0, 0.25, 0.50, 0.75, 1.00])
@@ -37,9 +37,9 @@ print(seoul_apartment['transaction price(won)'])
 3     705750000
 4    1585000000
 5    3950000000'''
-# 숫자를 정수로 변환하는 람다함수 : 
+# Lambda function to convert a number to an integer:
 seoul_apartment = seoul_apartment.applymap(lambda x: int(x) if isinstance(x, (int, float)) else x)
-# 내림정렬 : 
+# Descending sort:
     
 price_by_rank = seoul_apartment.sort_values(by = 'transaction price(won)', ascending = False)
 
@@ -55,45 +55,45 @@ def calculate_column_quantile(data):
    quantile = []
 
     for df in data:
-        # 각 데이터프레임의 첫 번째 열을 제외한 나머지 열에 대해 평균 계산
+        # Calculate the average of all columns except the first column in each dataframe
         data = data.iloc[-1].quantile([0.0, 0.25, 0.50, 0.75, 1.00])
         quantile.append(data)
     
     return means
 
-# 함수 호출하여 각 데이터프레임의 열 평균 계산
+# Calculate the column average of each data frame by calling a function
 data = [apartment, df1, df2]
 quantile = calculate_column_means(data)
 
-# 결과 출력
+# Result output
 
 for i, quantile in enumerate(means):
     print(f"df{i}의 평균:")
     print(mean)
     print()
 #%%
-# 50개 아파트 데이터 평균 
+# Data average for 50 apartments
 def calculate_column_means(data):
     quantiles= []
 
     for df in data:
-        # 각 데이터프레임의 첫 번째 열을 제외한 나머지 열에 대해 평균 계산
+        # Calculate the average of all columns except the first column in each dataframe
         quantiles = df.iloc[-1].mean()
         means.append(quantiles)
     
     return quantiles
 
-# 함수 호출하여 각 데이터프레임의 열 평균 계산
+# Calculate the column average of each data frame by calling a function
 data = [apartment, df1, df2]
 means = calculate_column_means(data)
 
-# 결과 출력
+# Result output
 
 for i,quantile in enumerate(quantiles):
     print(f"df{i}의 평균:")
     print(quantile)
     print()
-# 전체평균 = 3등급 
+# Overall average = 3 grades
 '''
 Subway               504.54
 Primary_School       629.70
@@ -102,7 +102,7 @@ High_School          788.78
 General_Hospital    1422.00
 Supermarket         1076.66
 Park                1283.80'''
-# 고가 아파트들의 평균 = 1등급
+# Average of expensive apartments = 1st grade
 '''
 Subway               425.08
 Primary_School       586.36
@@ -111,7 +111,7 @@ High_School          747.20
 General_Hospital    1306.96
 Supermarket          890.44
 Park                 974.44'''
-# 저가 아파트들의 평균 = 5등급
+# Average of low-cost apartments = 5 stars
 '''
 Subway               584.00
 Primary_School       673.04
@@ -121,21 +121,21 @@ General_Hospital    1537.04
 Supermarket         1262.88
 Park                1593.16'''
 
-# means[1] 전체평균
+# means[1] overall average
 rank3 = pd.DataFrame(means[1], columns=['mean_value'])
 rank1 = pd.DataFrame(means[2], columns=['mean_value'])
 rank5 = pd.DataFrame(means[3], columns=['mean_value'])
 #%%
-# 2등급 계산 :
+# Level 2 calculation:
 combined_df_1 = rank3.add(rank1, fill_value=0)
 
-# 각 열의 값을 2로 나누기
+# Divide the values ​​in each column by 2
 rank2 = combined_df_1 / 2
 #%%
-# 4등급 계산 :
+# Level 4 calculation:
 combined_df_2 = rank3.add(rank5, fill_value=0)
 
-# 각 열의 값을 2로 나누기
+# Divide the values ​​in each column by 2
 rank4 = combined_df_2 / 2
 
 #%%

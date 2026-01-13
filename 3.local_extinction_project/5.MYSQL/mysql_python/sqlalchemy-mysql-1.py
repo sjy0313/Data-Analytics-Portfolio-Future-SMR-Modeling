@@ -7,21 +7,21 @@ Created on Thu Aug  1 09:19:22 2024
 
 #%%
 #[connections.my_database]
-# QLAlchemy를 사용한 예제
+# Example using QLAlchemy
 
 # pip install sqlalchemy
 # pip install pymysql
 
 #%%
 
-# 데이터베이스 모델 정의: 학생 정보를 저장할 모델을 정의합니다.
+# Define database model: Define the model that will store student information.
 from sqlalchemy import create_engine, Column, Integer, String
 #from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
-# table layout [class에 create table 형식으로 쿼리작성]
+# table layout [Write a query in the class in create table format]
 class Hello(Base):
     __tablename__ = 'hello'
 
@@ -34,24 +34,24 @@ class Hello(Base):
     
 #%%
     
-# 데이터베이스 연결 및 테이블 생성: 데이터베이스에 연결하고 테이블을 생성합니다.
+# Connect to database and create table: Connect to database and create table.
 
-# SQLite 데이터베이스 파일 생성
+# Create SQLite database file
 DATABASE_URL = 'mysql+pymysql://root:solsql@localhost:3306/hellodb'
 engine = create_engine(DATABASE_URL)
 
-# 테이블 생성
+# Create table
 Base.metadata.create_all(engine)
 
 #%%
 
-# 데이터 삽입 및 조회: 세션을 생성하여 데이터를 삽입하고 조회합니다.
+# Inserting and querying data: Create a session to insert and query data.
 
-# 세션 생성
+# Create session
 Session = sessionmaker(bind=engine)
 session = Session()
 
-# 데이터 삽입
+# Insert data
 new_data = Hello(hid=9999, name='구구구', age=99)
 session.add(new_data)
 
@@ -59,12 +59,12 @@ session.commit()
 
 #%%
 
-# 데이터 조회
+# Data inquiry
 hellos = session.query(Hello).all()
 for hello in hellos:
     print(hello)
 
-# 세션 종료
+# Session ends
 session.close()
 
 #%%

@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# 우리나라 인구 소멸 위기 지역 분석
-# ### 인구 소멸 위기 지역:
+# Analysis of areas at risk of population extinction in Korea
+# ### Areas at risk of population extinction:
 # 
-# ‘한국의 ‘지방소멸’에 관한 7가지 분석’ 보고서를 쓴 이상호 한국고용정보원 부연구위원의 분석 방법을 이용. 
-# 65세 이상 노인 인구와 20∼39세 여성 인구를 비교해 **젊은 여성 인구가 노인 인구의 절반에 미달할 경우 
-# ‘소멸 위험 지역’으로 분류**하는 방식이다. 
+# Using the analysis method of Lee Sang-ho, an associate researcher at the Korea Employment Information Service, who wrote the report ‘7 Analysis of ‘Local Decline’ in Korea’.
+# Comparing the elderly population aged 65 or older with the female population aged 20 to 39 **If the young female population is less than half of the elderly population
+# The method is to classify it as a ‘region at risk of extinction’**.
 # 
 
 #%%
-# ## 인구 데이터 확보하고 정리하기
-# KOSIS(국가통계포털 ) : kosis.kr
-# 인구가구 > 인구부문 > 총조사 인구 총괄 > 총조사인구(2015) > 성 연령 및 세대구성별 인구 - 시군구 선택, 각 지역별 항목과 필요한 연령대
+# ## Obtaining and organizing population data
+# KOSIS (National Statistics Portal): kosis.kr
+# Population and household > Population sector > General survey population > Total survey population (2015) > Population by gender, age and household composition - City, county and district selection, items for each region and required age group
 
 #%%
 
@@ -48,17 +48,17 @@ population.rename(columns = {'행정구역(동읍면)별(1)':'광역시도',
 
 #%%
 
-# 컬럼('시도')에서 '소계' 데이터 행 삭제
+# Delete 'Subtotal' data row from column ('Attempt')
 population = population[(population['시도'] != '소계')]
 
 population
 
 #%%
 
-# * 위 표를 보면 **항목**이라는 컬럼의 내용이 각 행정구역 마다 **총인구수, 남자인구수, 여자인구수**로 나눠있는 것을 알 수 있음
-# * 이를 지금 정리하기 위해 간단히 반복문(for)으로 **합계, 남자, 여자**로 변경하고 **구분**이라는 컬럼으로 저장함
-# * 특히 이후 데이터 처리에서 copy 관련 warning을 피하기 위해 **.copy()**옵션으로 재지정함
-# * 그리고, **항목**을 지우기로 함
+# * Looking at the table above, you can see that the contents of the column called **Item** are divided into **Total population, male population, and female population** for each administrative district.
+# * To organize this now, simply use a loop (for) to change it to **Total, Male, Female** and save it as a column called **Separation**.
+# * In particular, in order to avoid copy-related warnings in subsequent data processing, it is respecified as the **.copy()** option.
+# * And, we decided to delete **item**
 
 #%%
 
@@ -74,7 +74,7 @@ population
 
 
 #%%
-# ## 인구 소멸 위기 지역 계산하고 데이터 정리하기
+# ## Calculate areas at risk of depopulation and organize data
 
 #%%
 
@@ -91,8 +91,8 @@ population.head(10)
 
 #%%
 
-# * **pivot_table**을 이용하여 **광역시도, 시도**를 index로 두고, **구분**으로 세로를 첫 번째 컬럼을 잡고, 
-# value에 **인구수, 20~39세, 65세이상**으로 정리해 둔다.
+# * Using **pivot_table**, set **metropolitan cities, cities and provinces** as the index, and set the first vertical column as **division**,
+# The value is organized as **Population, 20-39 years old, 65 years or older**.
 
 pop = pd.pivot_table(population, 
                      index = ['광역시도', '시도'], 
@@ -103,8 +103,8 @@ pop
 
 #%%
 
-# * **소멸비율**이라는 컬럼에 인구소멸위기지역을 계산하기 위한 식을 적용한다
-# * 이 비율이 1보다 작으면 **인구소멸위기지역**으로 볼 수 있다.
+# * Apply the formula to calculate the area at risk of population extinction in the column called **Extinction Rate**.
+# * If this ratio is less than 1, it can be viewed as **an area in danger of population extinction**.
 
 pop['소멸비율'] = pop['20-39세','여자'] / (pop['65세이상','합계'] / 2)
 pop.head()
@@ -112,7 +112,7 @@ pop.head()
 
 #%%
 
-# * 소멸위기지역인지를 boolean으로 지정해 둔다
+# * Specify whether the area is at risk of extinction as boolean.
 
 pop['소멸위기지역'] = pop['소멸비율'] < 1.0
 pop.head()
@@ -124,7 +124,7 @@ pop[pop['소멸위기지역']==True].index.get_level_values(1)
 
 #%%
 
-# * pivot_table로 잘 정리가 된 상태에서 **.reset_index**로 pivot_table의 result 속성을 다시 설정한다.
+# * With pivot_table well organized, reset the result attribute of pivot_table with **.reset_index**.
 
 pop.reset_index(inplace=True) 
 pop.head()
@@ -132,7 +132,7 @@ pop.head()
 
 #%%
 
-# * 이중 column을 해제하기 위해 두 컬럼 제목을 합쳐 다시 지정한다.
+# * To release double columns, combine the two column titles and designate them again.
 
 tmp_coloumns = [pop.columns.get_level_values(0)[n] + \
                 pop.columns.get_level_values(1)[n] 
@@ -150,7 +150,7 @@ pop.info()
 
 #%%
 
-# ## 지도 시각화를 위해 지역별 고유 ID 만들기
+# ## Create a unique ID per region for map visualization
 
 pop['시도'].unique()
 
@@ -209,7 +209,7 @@ si_name
 
 #%%
 
-# * 지도 시각화에 사용하기 위해 위 과정에서 만들어진 행정구역의 고유한 이름을 ID로 지정한다
+# * For use in map visualization, specify the unique name of the administrative district created in the above process as ID.
 
 pop['ID'] = si_name
 
@@ -226,7 +226,7 @@ pop.head()
 
 #%%
 
-# ## Cartogram으로 우리나라 지도 만들기
+# ## Make a map of our country with Cartogram
 
 #%%
 
@@ -237,7 +237,7 @@ draw_korea_raw
 
 #%%
 
-# * 이제 각 행정 구역의 화면상 좌표를 얻기 위해 pivot_table의 반대 개념으로 **.stack()** 명령을 사용한다.
+# * Now, use the **.stack()** command as the opposite of pivot_table to obtain the on-screen coordinates of each administrative district.
 
 draw_korea_raw_stacked = pd.DataFrame(draw_korea_raw.stack())
 draw_korea_raw_stacked.reset_index(inplace=True)
@@ -248,37 +248,37 @@ draw_korea_raw_stacked
 
 
 #%%
-# * 다시 인덱스를 재설정하고...
-# * 컬럼의 이름을 다시 설정해 준다.
+# * Reset the index again...
+# * Reset the column name.
 
 draw_korea = draw_korea_raw_stacked
 
 
 #%%
 
-# * 먼저 ID 컬럼에서 지도에 표기할때 시 이름 구 이름으로 줄을 나누기 위해 분리한다
+# * First, when marking on the map in the ID column, separate the lines by city name and district name.
 
 BORDER_LINES = [
-    [(5, 1), (5,2), (7,2), (7,3), (11,3), (11,0)], # 인천
+    [(5, 1), (5,2), (7,2), (7,3), (11,3), (11,0)], # Incheon
     [(5,4), (5,5), (2,5), (2,7), (4,7), (4,9), (7,9), 
-     (7,7), (9,7), (9,5), (10,5), (10,4), (5,4)], # 서울
+     (7,7), (9,7), (9,5), (10,5), (10,4), (5,4)], # seoul
     [(1,7), (1,8), (3,8), (3,10), (10,10), (10,7), 
      (12,7), (12,6), (11,6), (11,5), (12, 5), (12,4), 
-     (11,4), (11,3)], # 경기도
-    [(8,10), (8,11), (6,11), (6,12)], # 강원도
+     (11,4), (11,3)], # gyeonggi-do
+    [(8,10), (8,11), (6,11), (6,12)], # Gangwon-do
     [(12,5), (13,5), (13,4), (14,4), (14,5), (15,5), 
-     (15,4), (16,4), (16,2)], # 충청북도
+     (15,4), (16,4), (16,2)], # Chungcheongbuk-do
     [(16,4), (17,4), (17,5), (16,5), (16,6), (19,6), 
-     (19,5), (20,5), (20,4), (21,4), (21,3), (19,3), (19,1)], # 전라북도
-    [(13,5), (13,6), (16,6)], # 대전시
-    [(13,5), (14,5)], #세종시
-    [(21,2), (21,3), (22,3), (22,4), (24,4), (24,2), (21,2)], #광주
-    [(20,5), (21,5), (21,6), (23,6)], #전라남도
-    [(10,8), (12,8), (12,9), (14,9), (14,8), (16,8), (16,6)], #충청북도
-    [(14,9), (14,11), (14,12), (13,12), (13,13)], #경상북도
-    [(15,8), (17,8), (17,10), (16,10), (16,11), (14,11)], #대구
-    [(17,9), (18,9), (18,8), (19,8), (19,9), (20,9), (20,10), (21,10)], #부산
-    [(16,11), (16,13)], #울산
+     (19,5), (20,5), (20,4), (21,4), (21,3), (19,3), (19,1)], # Jeollabuk-do
+    [(13,5), (13,6), (16,6)], # Daejeon
+    [(13,5), (14,5)], # Sejong City
+    [(21,2), (21,3), (22,3), (22,4), (24,4), (24,2), (21,2)], # gwangju
+    [(20,5), (21,5), (21,6), (23,6)], # Jeollanam-do
+    [(10,8), (12,8), (12,9), (14,9), (14,8), (16,8), (16,6)], # Chungcheongbuk-do
+    [(14,9), (14,11), (14,12), (13,12), (13,13)], # Gyeongsangbuk-do
+    [(15,8), (17,8), (17,10), (16,10), (16,11), (14,11)], # daegu
+    [(17,9), (18,9), (18,8), (19,8), (19,9), (20,9), (20,10), (21,10)], # busan
+    [(16,11), (16,13)], # Ulsan
 #     [(9,14), (9,15)], 
     [(27,5), (27,6), (25,6)],
 ]
@@ -288,11 +288,11 @@ BORDER_LINES = [
 
 plt.figure(figsize=(8, 11))
 
-# 지역 이름 표시
+# Show region name
 for idx, row in draw_korea.iterrows():
     
-    # 광역시는 구 이름이 겹치는 경우가 많아서 시단위 이름도 같이 표시한다. 
-    # (중구, 서구)
+    # In metropolitan cities, district names often overlap, so city-level names are also displayed.
+    # (Jung-gu, Seo-gu)
     if len(row['ID'].split())==2:
         dispname = '{}\n{}'.format(row['ID'].split()[0], row['ID'].split()[1])
     elif row['ID'][:2]=='고성':
@@ -300,7 +300,7 @@ for idx, row in draw_korea.iterrows():
     else:
         dispname = row['ID']
 
-    # 서대문구, 서귀포시 같이 이름이 3자 이상인 경우에 작은 글자로 표시한다.
+    # If the name has more than 3 characters, such as Seodaemun-gu or Seogwipo-si, it is displayed in small letters.
     if len(dispname.splitlines()[-1]) >= 3:
         fontsize, linespacing = 9.5, 1.5
     else:
@@ -310,7 +310,7 @@ for idx, row in draw_korea.iterrows():
                  fontsize=fontsize, ha='center', va='center', 
                  linespacing=linespacing)
     
-# 시도 경계 그린다.
+# Draw city and city boundaries.
 for path in BORDER_LINES:
     ys, xs = zip(*path)
     plt.plot(xs, ys, c='black', lw=1.5)
@@ -326,7 +326,7 @@ plt.show()
 
 #%%
 
-# * 인구에 대한 분석 결과인 pop과 지도를 그리기 위한 draw_korea의 대이터를 합칠 때 사용할 key인 ID 컬럼의 내용이 문제가 없는지 확인하자
+# * Let’s check if there are any problems with the contents of the ID column, which is the key to be used when combining data from pop, which is the result of population analysis, and draw_korea, which is used to draw a map.
 
 set(draw_korea['ID'].unique()) - set(pop['ID'].unique())
 
@@ -336,8 +336,8 @@ set(draw_korea['ID'].unique()) - set(pop['ID'].unique())
 set(pop['ID'].unique()) - set(draw_korea['ID'].unique())
 
 
-# * 위 결과에 따르면, pop에 행정구를 가진 시들의 데이터가 더 있다는 것을 알 수 있다.
-# * 어차피 지도에서는 표시되지 못하니 삭제한다.
+# * According to the results above, you can see that there are more data on cities with administrative districts in pop.
+# * It cannot be displayed on the map anyway, so delete it.
 
 #%%
 
@@ -356,7 +356,7 @@ pop.head()
 
 #%%
 
-# * 이제 pop과 draw_korea의 ID 컬럼이 일치했다고 보고, ID를 key로 merge를 시키도록 한다.
+# * Now, assuming that the ID columns of pop and draw_korea match, merge the ID as the key.
 
 pop = pd.merge(pop, draw_korea, how='left', on=['ID'])
 
@@ -365,7 +365,7 @@ pop.head()
 #%%
 
 
-# * 이제 위 pop 데이터에서 지도에 표현하고자 하는 데이터가 **인구수합계**라면 이 값들이 아까 만든 각 해당 행정구역에 위치하면 된다.
+# * Now, if the data you want to express on the map from the pop data above is **population total**, these values ​​can be located in each administrative district created earlier.
 
 mapdata = pop.pivot_table(index='y', columns='x', values='인구수합계')
 masked_mapdata = np.ma.masked_where(np.isnan(mapdata), mapdata)
@@ -383,7 +383,7 @@ masked_mapdata
 
 #%%
 
-# * 위 내용과 colormap을 완성하는 명령을 추가해서 함수로 만들자
+# * Let’s make it a function by adding a command to complete the above content and colormap.
 
 def drawKorea(targetData, blockedMap, cmapname):
     gamma = 0.75
@@ -404,10 +404,10 @@ def drawKorea(targetData, blockedMap, cmapname):
     plt.pcolor(masked_mapdata, vmin=vmin, vmax=vmax, cmap=cmapname, 
                edgecolor='#aaaaaa', linewidth=0.5)
 
-    # 지역 이름 표시
+    # Show region name
     for idx, row in blockedMap.iterrows():
-        # 광역시는 구 이름이 겹치는 경우가 많아서 시단위 이름도 같이 표시한다. 
-        #(중구, 서구)
+        # In metropolitan cities, district names often overlap, so city-level names are also displayed.
+        # (Jung-gu, Seo-gu)
         if len(row['ID'].split())==2:
             dispname = '{}\n{}'.format(row['ID'].split()[0], row['ID'].split()[1])
         elif row['ID'][:2]=='고성':
@@ -415,7 +415,7 @@ def drawKorea(targetData, blockedMap, cmapname):
         else:
             dispname = row['ID']
 
-        # 서대문구, 서귀포시 같이 이름이 3자 이상인 경우에 작은 글자로 표시한다.
+        # If the name has more than 3 characters, such as Seodaemun-gu or Seogwipo-si, it is displayed in small letters.
         if len(dispname.splitlines()[-1]) >= 3:
             fontsize, linespacing = 10.0, 1.1
         else:
@@ -426,7 +426,7 @@ def drawKorea(targetData, blockedMap, cmapname):
                      fontsize=fontsize, ha='center', va='center', color=annocolor,
                      linespacing=linespacing)
 
-    # 시도 경계 그린다.
+    # Draw city and city boundaries.
     for path in BORDER_LINES:
         ys, xs = zip(*path)
         plt.plot(xs, ys, c='black', lw=2)
@@ -444,7 +444,7 @@ def drawKorea(targetData, blockedMap, cmapname):
 
 #%%
 
-# ## 인구 현황 및 인구 소멸 지역 확인하기
+# ## Check population status and depopulated areas
 
 #%%
 
@@ -453,7 +453,7 @@ drawKorea('인구수합계', pop, 'Blues')
 
 #%%
 
-# * 인구 소멸 위기 지역에 대한 표현
+# * Expression of areas at risk of population extinction
 
 
 pop['소멸위기지역'] = [1 if con else 0 for con in pop['소멸위기지역']]
@@ -462,7 +462,7 @@ drawKorea('소멸위기지역', pop, 'Reds')
 
 #%%
 
-# ## 인구 현황에서 여성 인구 비율 확인하기
+# ## Check the percentage of female population in the population status
 
 def drawKorea(targetData, blockedMap, cmapname):
     gamma = 0.75
@@ -482,10 +482,10 @@ def drawKorea(targetData, blockedMap, cmapname):
     plt.pcolor(masked_mapdata, vmin=vmin, vmax=vmax, cmap=cmapname, 
                edgecolor='#aaaaaa', linewidth=0.5)
 
-    # 지역 이름 표시
+    # Show region name
     for idx, row in blockedMap.iterrows():
-        # 광역시는 구 이름이 겹치는 경우가 많아서 시단위 이름도 같이 표시한다. 
-        #(중구, 서구)
+        # In metropolitan cities, district names often overlap, so city-level names are also displayed.
+        # (Jung-gu, Seo-gu)
         if len(row['ID'].split())==2:
             dispname = '{}\n{}'.format(row['ID'].split()[0], row['ID'].split()[1])
         elif row['ID'][:2]=='고성':
@@ -493,7 +493,7 @@ def drawKorea(targetData, blockedMap, cmapname):
         else:
             dispname = row['ID']
 
-        # 서대문구, 서귀포시 같이 이름이 3자 이상인 경우에 작은 글자로 표시한다.
+        # If the name has more than 3 characters, such as Seodaemun-gu or Seogwipo-si, it is displayed in small letters.
         if len(dispname.splitlines()[-1]) >= 3:
             fontsize, linespacing = 10.0, 1.1
         else:
@@ -504,7 +504,7 @@ def drawKorea(targetData, blockedMap, cmapname):
                      fontsize=fontsize, ha='center', va='center', color=annocolor,
                      linespacing=linespacing)
 
-    # 시도 경계 그린다.
+    # Draw city and city boundaries.
     for path in BORDER_LINES:
         ys, xs = zip(*path)
         plt.plot(xs, ys, c='black', lw=2)
@@ -540,7 +540,7 @@ drawKorea('2030여성비', pop, 'RdBu')
 
 #%%
 
-# ## Folium에서 인구 소멸 위기 지역 표현하기
+# ## Representing areas at risk of depopulation in Folium
 
 #%%
 

@@ -11,7 +11,7 @@ df3 = pd.read_excel('C:/Users/신정윤/Documents/Python/새 폴더/MYSELF24/Dat
 df4 = pd.read_excel('C:/Users/신정윤/Documents/Python/새 폴더/MYSELF24/DataAnalysis/project/book_info(2023).xlsx')
 
 df1 
-sum(df1.duplicated(subset=['shortreview'])) # 중복된 행의 개수 : 95
+sum(df1.duplicated(subset=['shortreview'])) # Number of duplicate rows: 95
 sr1 = df1['shortreview'].value_counts().to_dict()
 sr1_1 = pd.Series(sr1)
 sre1 = pd.DataFrame([sr1_1])

@@ -5,47 +5,47 @@ Created on Mon Apr 15 09:38:18 2024
 @author: Shin
 """
 import pandas as pd
-# 4개의 장르 파일 -> 빈 리스트에 저장
+# 4 genre files -> Save to empty list
 excel_f = [] 
 for year in range(2020, 2024):
     excel_f.append(pd.read_excel(f"./Miniproject_2_excel data/Genrelist_of_bestseller{year}.xlsx"))
     print(excel_f)
     
     
-# excel_f 의 value값이 dataframe이기 때문에,
-#value값을 위와 같이 리스트자료형으로 묶어주었다. 
-#excel_f에서 4개파일의 value들을 차례대로 함수에 할당할 수 있는 변수로 만들어줌. 
+# Because the value of excel_f is a dataframe,
+# The values ​​were grouped into a list data type as shown above.
+# In excel_f, the values ​​of the four files are made into variables that can be assigned to the function in order.
 
-# 4개년도 한번에 처리
+# Process 4 years at once
 import pandas as pd
 
 def cleans_integrate(excel_f):
-    genre_freq_years = {} # 연도 별 '장르'빈도수 저장할 딕셔너리 
+    genre_freq_years = {} # Dictionary to store 'genre' frequency by year
     for idx, df in enumerate(excel_f, start = 1):
-        genre_freq = df['장르'].value_counts().to_dict() # '장르'열 빈도수 계산 후 딕셔너리로 변환
-        genre_df = pd.DataFrame([genre_freq]) # 딕셔너리 -> dataframe 변환
-        # f'{idx}'에서 idx값을 위에 열거 순에 따라 인덱스 값을 1~4까지 반환
+        genre_freq = df['장르'].value_counts().to_dict() # Calculate the frequency of the 'Genre' column and convert it to a dictionary
+        genre_df = pd.DataFrame([genre_freq]) # Dictionary -> dataframe conversion
+        # In f'{idx}', returns index values ​​from 1 to 4 according to the order of idx values ​​listed above.
         genre_df.rename(index={0: f'{idx}'}, inplace=True) 
         genre_freq_years[f'{idx}'] = genre_df
         
         
     return genre_freq_years
-# 'cleans_integrate' 함수 호출 [데이터 정제 및 통합]
+# Call 'cleans_integrate' function [Data Cleaning and Integration]
 result = cleans_integrate(excel_f)
 
 #%%
-#result 결과 = {key : 1~4 , value : 4년치 dataframe}
-result_list = list(result.values()) # DataFrame인 value값 리스트에 넣기
-result_integrate = pd.concat(result_list) # value값들을 합쳐 DataFrame만들기
+# result Result = {key: 1~4, value: 4 years' worth of dataframe}
+result_list = list(result.values()) # Insert value into DataFrame value list
+result_integrate = pd.concat(result_list) # Create a DataFrame by combining values
 
-# top5로 분야로 dataframe만들기 :
+# Create a dataframe with the top 5 fields:
 top5 = result_integrate.iloc[:4, :5]
 top5.index = range(2020, 2024)
 
 sum_row = top5.sum(axis=0)
 sum_row.name = '합계'
 
-# transpose() 활용을 통해 새로운 열이아닌 '합계'행 추가
+# Using transpose(), add a 'total' row instead of a new column
 top5 = pd.concat([top5, pd.DataFrame(sum_row).transpose()], axis=0)
 top5 = top5.rename_axis('연도')
 top5.to_excel('./Miniproject_2_excel data/top5_Genre.xlsx', index=True)

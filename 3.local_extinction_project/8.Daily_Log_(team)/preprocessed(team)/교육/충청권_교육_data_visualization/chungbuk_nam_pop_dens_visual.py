@@ -30,7 +30,7 @@ plt.savefig(f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/Visual_data/충�
 plt.show()
 
 #%%
-#충남
+# Chungnam
 file_path = f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/chungnam_data/result_chungnam.csv"
 edu2 = pd.read_csv(file_path, header=None)
 edu2 = edu2.iloc[:, 1]

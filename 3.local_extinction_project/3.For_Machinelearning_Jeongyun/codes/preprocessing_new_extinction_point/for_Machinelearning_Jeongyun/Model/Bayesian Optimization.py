@@ -7,13 +7,13 @@ Created on Fri Jul 26 16:03:07 2024
 
 #%%
 # Gridsearch
-# 모든 하이퍼파라미터 후보들에 대한 일반화 성능을 확인하기 때문에 시간이 너무 오래 걸림
+# It takes too long because it checks the generalization performance for all hyperparameter candidates.
 
 # Randomsearch
-#GridSearch에 비해 시간은 적게 걸리지만, 말 그대로 "랜덤"하게 몇 개만 뽑아서 확인해보는 식이라 정확도가 다소 떨어질 수 있음
+# It takes less time than GridSearch, but since it literally selects a few “random” items and checks them, accuracy may be somewhat lower.
 
-# 베이지안 최적화(Bayesian Optimization)
-# 랜덤 서치나 그리드 서치보다 적은 시도 횟수로 더 좋은 하이퍼파라미터를 찾을 가능성이 높습니다.
+# Bayesian Optimization
+# It is more likely to find better hyperparameters in fewer attempts than random or grid search.
 
 # LightGBM with bayseian optimizer
 import lightgbm as lgbm
@@ -26,7 +26,7 @@ from skopt import BayesSearchCV
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-# 데이터 로드 및 전처리
+# Data loading and preprocessing
 t = pd.read_csv('C:/Users/Shin/Documents/Final_Project/Data/교육_전국/교육_연도별_전국통합/2015_소멸등급.csv')
 d = pd.read_excel("C:/Users/Shin/Documents/Final_Project/Data/교육_전국/교육_연도별_전국통합/교육/EXCEL/교육_2015_전국.xlsx")
 
@@ -34,12 +34,12 @@ X =  d[['교원_1인당_학생수_유치원', '교원_1인당_학생수_초등�
         '유치원_학급당 학생 수 (명)', '초등학교_학급당 학생 수 (명)', '중학교_학급당 학생 수 (명)','고등학교_학급당 학생 수 (명)',
         '학교교과 교습학원 (개)', '평생직업 교육학원 (개)', '사설학원당 학생수 (명)','유치원생 수', '초등학생 수']]
 
-y = t['2015_등급'] - 1  # 클래스 레이블이 [0, 1, 2, 3]이 되도록 조정
+y = t['2015_등급'] - 1  # Adjust class labels to be [0, 1, 2, 3]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=1)
 
 
-#목적함수 생성
+# Create objective function
 def lgbm_cv(learning_rate, num_leaves, max_depth, min_child_weight, colsample_bytree, feature_fraction, bagging_fraction, lambda_l1, lambda_l2):
     model = lgbm.LGBMClassifier(learning_rate=learning_rate,
                                 n_estimators = 300,
@@ -57,7 +57,7 @@ def lgbm_cv(learning_rate, num_leaves, max_depth, min_child_weight, colsample_by
     result = cross_validate(model, X, y, cv=5, scoring=scoring)
     auc_score = result["test_roc_auc_score"].mean()
     return auc_score
-# 입력값의 탐색 대상 구간
+# Search target section of input value
 pbounds = {'learning_rate' : (0.0001, 0.05),
            'num_leaves': (300, 600),
            'max_depth': (2, 25),
@@ -76,12 +76,12 @@ num_leaves : 250정도로 설정해도 무방합니다. 300~600 정도로 설정
 max_depth : -1 로 설정하면 무한대로 트리가 길어집니다. 9~ 정도로 설정하는게 무방하나 조금 더 넓은 범위로 설정했습니다.
 
 feature_fraction, bagging_fraction : 0과 1 사이의 범위로 설정했습니다.'''
-#객체 생성
+# Create object
 lgbmBO = BayesianOptimization(f = lgbm_cv, pbounds = pbounds, verbose = 2, random_state = 0 )
 lgbmBO.maximize(init_points=5, n_iter = 20, acq='ei', xi=0.01)
 lgbmBO.max
 
-#파라미터 적용
+# Apply parameters
 fit_lgbm = lgbm.LGBMClassifier(learning_rate=lgbmBO.max['params']['learning_rate'],
                                num_leaves = int(round(lgbmBO.max['params']['num_leaves'])),
                                max_depth = int(round(lgbmBO.max['params']['max_depth'])),
@@ -100,10 +100,10 @@ joblib.dump(model, 'lgbmBO_201006.pkl')
 pred_y = model.predict(y_test)
 #%%
 
-# XGBoost 모델
+# XGBoost model
 xgb_clf = XGBClassifier(use_label_encoder=False, eval_metric='mlogloss')
 
-# 베이지안 최적화
+# Bayesian optimization
 param_space = {
     'learning_rate': (0.01, 1.0, 'log-uniform'),
     'max_depth': (3, 10),
@@ -124,14 +124,14 @@ bayes_search = BayesSearchCV(
     verbose=1
 )
 
-# 최적화 수행
+# Perform optimization
 bayes_search.fit(X_train, y_train)
 
-# 최적의 하이퍼파라미터 출력
+# Optimal hyperparameter output
 print('Best parameters:', bayes_search.best_params_)
 print('Best cross-validation score:', bayes_search.best_score_)
 
-# 테스트 데이터에서 성능 평가
+# Performance evaluation on test data
 y_pred = bayes_search.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 conf_matrix = confusion_matrix(y_test, y_pred)

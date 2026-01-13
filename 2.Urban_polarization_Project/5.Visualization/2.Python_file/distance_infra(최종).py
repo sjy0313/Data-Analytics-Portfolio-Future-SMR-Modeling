@@ -37,7 +37,7 @@ fig.update_layout(
     barmode='group',
     bargap=0.15, # gap between bars of adjacent location coordinates.
     bargroupgap=0.1, # gap between bars of the same location coordinate.
-    xaxis_tickangle= 0,  # x축 레이블 기울기 설정
+    xaxis_tickangle= 0,  # Set x-axis label slope
 )
 fig.show()
 

@@ -24,13 +24,13 @@ X =  d[['교원_1인당_학생수_유치원', '교원_1인당_학생수_초등�
 y = t[['2015_등급']]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=1)
-# RandomizedSearchCV 사용이유 
-# GridSearchCV와 달리, RandomizedSearchCV는 하이퍼파라미터 공간의 모든 조합을 시도하지 않고,
-# 사용자 지정 개수(n_iter)만큼의 조합을 랜덤하게 선택합니다. 이렇게 함으로써 계산 시간을 절약하면서도 다양한 설정을 탐색할 수 있습니다.
-# 하이퍼파라미터의 범위 내에서 무작위로 조합을 선택하여 시험합니다. 그리드 탐색보다 빠르지만, 최적의 조합을 찾을 확률은 낮아질 수 있습니다. 
+# Reasons for using RandomizedSearchCV
+# Unlike GridSearchCV, RandomizedSearchCV does not try all combinations of the hyperparameter space;
+# Randomly selects a user-specified number (n_iter) of combinations. This allows you to explore a variety of settings while saving computation time.
+# Randomly select combinations within the range of hyperparameters and test them. It is faster than grid search, but the probability of finding the optimal combination may be lower.
 
 #%%
-# 의사결정나무 DecisionTree
+# Decision Tree DecisionTree
 '''
 criterion : 분할 성능 측정 기능
 
@@ -52,7 +52,7 @@ n_iter : 파라미터 검색 횟수
 
 best score: 최고 평균 정확도 수치
 '''
-# 최적의 파라미터 조합찾기
+# Find the optimal parameter combination
 dt_clf = DecisionTreeClassifier(random_state=1)
 
 param_dist = {
@@ -76,10 +76,10 @@ print('best score : ', round(rand_search.best_score_, 4))
 df = pd.DataFrame(rand_search.cv_results_)
 df
 #%%
-# 최적의 파라미터  'min_samples_split': 4, 'min_samples_leaf': 1, 'max_leaf_nodes': 3, 'max_depth': 5, 'criterion': 'gini'
+# Optimal parameters 'min_samples_split': 4, 'min_samples_leaf': 1, 'max_leaf_nodes': 3, 'max_depth': 5, 'criterion': 'gini'
 from sklearn.tree import DecisionTreeClassifier
 
-# 최적의 파라미터로 모델 초기화
+# Initialize model with optimal parameters
 best_params = rand_search.best_params_
 best_model = DecisionTreeClassifier(
     criterion=best_params['criterion'],
@@ -89,15 +89,15 @@ best_model = DecisionTreeClassifier(
     min_samples_leaf=best_params['min_samples_leaf'],
     random_state=1
 )
-# 모델 학습
+# model training
 best_model.fit(X_train, y_train)
 #%%
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
-# 테스트 데이터에 대한 예측
+# Predictions on test data
 y_pred = best_model.predict(X_test)
 
-# 모델 성능 평가
+# Model performance evaluation
 accuracy = accuracy_score(y_test, y_pred)
 report = classification_report(y_test, y_pred)
 conf_matrix = confusion_matrix(y_test, y_pred)
@@ -133,7 +133,7 @@ import lightgbm as lgb
 from sklearn.model_selection import RandomizedSearchCV
 from sklearn.metrics import accuracy_score
 
-# LightGBM 모델 초기화
+# LightGBM model initialization
 lgb_clf = lgb.LGBMClassifier(random_state=1)
 '''
 num_leaves: 트리의 잎사귀 수.
@@ -143,7 +143,7 @@ max_depth: 트리의 최대 깊이.
 min_child_samples: 리프 노드의 최소 샘플 수.
 subsample: 데이터의 일부를 샘플링할 비율.
 colsample_bytree: 각 트리를 학습할 때 사용하는 특성의 비율.'''
-# 하이퍼파라미터 공간 정의
+# Hyperparameter space definition
 param_dist_lgb = {
     'num_leaves': [31, 50, 70],
     'learning_rate': [0.01, 0.1, 0.2],
@@ -154,14 +154,14 @@ param_dist_lgb = {
     'colsample_bytree': [0.6, 0.8, 1.0]
 }
 
-# RandomizedSearchCV 수행
+# Perform RandomizedSearchCV
 rand_search_lgb = RandomizedSearchCV(lgb_clf, param_distributions=param_dist_lgb, n_iter=50, cv=5, scoring='accuracy', random_state=1)
-rand_search_lgb.fit(X_train, y_train.values.ravel())  # y_train.values.ravel()는 y_train을 1차원 배열로 변환합니다.
+rand_search_lgb.fit(X_train, y_train.values.ravel())  # y_train.values.ravel() converts y_train to a one-dimensional array.
 
 print('Best parameters:', rand_search_lgb.best_params_)
 print('Best score:', round(rand_search_lgb.best_score_, 4))
 
-# 최적의 모델로 평가
+# Evaluated as the optimal model
 best_lgb_model = rand_search_lgb.best_estimator_
 y_pred_lgb = best_lgb_model.predict(X_test)
 print(f"LightGBM Accuracy: {accuracy_score(y_test, y_pred_lgb):.4f}")
@@ -175,7 +175,7 @@ LightGBM Accuracy: 0.3103'''
 import lightgbm as lgb
 from sklearn.metrics import accuracy_score
 
-# 최적의 하이퍼파라미터를 사용하여 LightGBM 모델 초기화
+# Initialize LightGBM model using optimal hyperparameters
 best_params = rand_search_lgb.best_params_
 lgb_clf_best = lgb.LGBMClassifier(
     num_leaves=best_params['num_leaves'],
@@ -188,17 +188,17 @@ lgb_clf_best = lgb.LGBMClassifier(
     random_state=1
 )
 
-# 최적의 파라미터로 모델 학습
+# Train model with optimal parameters
 lgb_clf_best.fit(X_train, y_train.values.ravel())
 
-# 테스트 데이터에서 예측 수행
+# Make predictions on test data
 y_pred_lgb = lgb_clf_best.predict(X_test)
 
-# 정확도 평가
+# Accuracy evaluation
 accuracy = accuracy_score(y_test, y_pred_lgb)
 print(f"LightGBM Accuracy with optimized parameters: {accuracy:.4f}")
 
-# 예측 결과의 혼동 행렬과 분류 리포트 출력 (선택 사항)
+# Output confusion matrix and classification report of prediction results (optional)
 from sklearn.metrics import confusion_matrix, classification_report
 
 conf_matrix = confusion_matrix(y_test, y_pred_lgb)
@@ -243,7 +243,7 @@ from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from sklearn.metrics import accuracy_score
 import pandas as pd
 
-# 데이터 불러오기
+# Load data
 t = pd.read_csv('C:/Users/Shin/Documents/Final_Project/Data/교육_전국/교육_연도별_전국통합/2015_소멸등급.csv')
 d = pd.read_excel("C:/Users/Shin/Documents/Final_Project/Data/교육_전국/교육_연도별_전국통합/교육/EXCEL/교육_2015_전국.xlsx")
 
@@ -253,16 +253,16 @@ X =  d[['교원_1인당_학생수_유치원', '교원_1인당_학생수_초등�
 
 y = t['2015_등급']
 
-# 클래스 레이블을 0부터 시작하도록 변환
+# Convert class labels to start from 0
 y = y - 1
 
-# 데이터 분할
+# data partitioning
 X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=1)
 
-# XGBoost 모델 설정
+# XGBoost model settings
 xgb_clf = xgb.XGBClassifier(random_state=1)
 
-# 하이퍼파라미터 그리드 설정
+# Hyperparameter grid settings
 param_dist = {
     'n_estimators': [50, 100, 150, 200],
     'max_depth': [3, 4, 5, 6],
@@ -272,15 +272,15 @@ param_dist = {
     'gamma': [0, 0.1, 0.2, 0.3, 0.4]
 }
 
-# RandomizedSearchCV 수행
+# Perform RandomizedSearchCV
 rand_search = RandomizedSearchCV(xgb_clf, param_distributions=param_dist, n_iter=50, cv=5, scoring='accuracy', random_state=1)
 rand_search.fit(X_train, y_train)
 
-# 최적의 하이퍼파라미터와 성능 확인
+# Check optimal hyperparameters and performance
 print('Best parameters:', rand_search.best_params_)
 print('Best score:', round(rand_search.best_score_, 4))
 
-# 최적의 모델로 예측 수행 및 평가
+# Make and evaluate predictions with optimal models
 best_model = rand_search.best_estimator_
 y_pred = best_model.predict(X_test)
 print('Test Accuracy:', accuracy_score(y_test, y_pred))
@@ -292,21 +292,21 @@ Test Accuracy: 0.46551724137931033'''
 import xgboost as xgb
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-# 최적의 하이퍼파라미터로 XGBoost 모델 생성
+# Create an XGBoost model with optimal hyperparameters
 best_params = {'subsample': 0.8, 'n_estimators': 100, 'max_depth': 3, 'learning_rate': 0.3, 'gamma': 0.4, 'colsample_bytree': 0.6}
 xgb_clf_optimized = xgb.XGBClassifier(**best_params, random_state=1)
 
-# 최적의 모델로 학습
+# Learn with the optimal model
 xgb_clf_optimized.fit(X_train, y_train)
 
-# 예측 수행
+# perform predictions
 y_pred = xgb_clf_optimized.predict(X_test)
 
-# 정확도 평가
+# Accuracy evaluation
 accuracy = accuracy_score(y_test, y_pred)
 print('Test Accuracy:', accuracy)
 
-# 혼동 행렬 및 분류 보고서 출력
+# Confusion matrix and classification report output
 print('Confusion Matrix:')
 print(confusion_matrix(y_test, y_pred))
 

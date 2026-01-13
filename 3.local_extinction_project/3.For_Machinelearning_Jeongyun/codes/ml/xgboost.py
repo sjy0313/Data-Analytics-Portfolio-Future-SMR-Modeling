@@ -6,17 +6,17 @@ Created on Mon Jul 29 08:55:49 2024
 """
 
 import pandas as pd
-# 데이터 로드
+# data load
 df = pd.read_csv("./preprocessed/merged_data.csv", index_col=0)
 df2 = pd.read_csv("./preprocessed/merged_data.csv", index_col=0)
 
-# LabelEncoder 클래스를 불러옵니다.
+# Load the LabelEncoder class.
 from sklearn.preprocessing import LabelEncoder
 
-# LabelEncoder를 객체로 생성합니다.
+# Create LabelEncoder as an object.
 le = LabelEncoder()
 
-# fit_transform()으로 라벨인코딩을 수행합니다.
+# Perform label encoding with fit_transform().
 df['소멸위험등급'] = le.fit_transform(df['소멸위험등급'])
 
 # %%
@@ -35,10 +35,10 @@ X = df.iloc[:,1:-2]
 
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# LGBM 데이터셋 생성
+# Create LGBM dataset
 train_data = lgb.Dataset(X_train, label=y_train)
 
-# 하이퍼파라미터 설정
+# Hyperparameter settings
 params = {
     # 'objetive': 'binary',
     'metric': 'binary_logloss',
@@ -49,11 +49,11 @@ params = {
     'bagging_freq': 5,
     'verbose': 0}
 
-# 모델 학습
+# model training
 num_rounds = 100
 lgbm_model = lgb.train(params, train_data, num_rounds)
 
-# 모델 평가
+# Model evaluation
 y_pred = lgbm_model.predict(X_test)
 y_pred = y_pred
 # accuracy = sum(y_pred == y_test) / len(y_test)

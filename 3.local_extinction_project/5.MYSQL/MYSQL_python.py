@@ -15,20 +15,20 @@ conn = MySQLdb.connect(
     passwd='1234',
     host = 'localhost',
     db='hellodb')
-# 커서 추출하기
+# Extracting the cursor
 cur = conn.cursor()
-# 테이블 생성하기
-#AUTO_INCREMENT 자동으로 id 번호매겨줌.
+# Creating a table
+# AUTO_INCREMENT Automatically numbers IDs.
 cur.execute("DROP TABLE IF EXISTS items")
 cur.execute('''CREATE TABLE items (
 item_id INTEGER PRIMARY KEY AUTO_INCREMENT, 
 name TEXT,
 price INTEGER) ''')
 conn.commit()
-# 데이터 추가하기
+# Add data
 
 datum = [("Mango", 7700), ("Kiwi",4000), ("Grape", 8000), ('Banana', 4000)]
-# 한건(1행)의 데이터에 대해서는 
+# For one item (row 1) of data:
 cur.executemany("INSERT INTO items(name,price) VALUES(%s, %s)", datum)
 conn.commit()
 #%%
@@ -38,7 +38,7 @@ cur.execute("INSERT INTO items(name,price) VALUES(?,?)", datum)
 cur.execute("SELECT * FROM items")
 for row in cur.fetchall():
     print(row)
-# delete/update 에서만 commit이 필요 select에서는 필요없음.    
+# Commit is required only for delete/update, not required for select.
 conn.close()
 #%%
 import pandas as pd 

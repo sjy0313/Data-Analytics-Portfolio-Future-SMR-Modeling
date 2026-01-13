@@ -10,7 +10,7 @@ from matplotlib import font_manager, rc
 import pandas as pd
 import seaborn as sns
 
-# 폰트설정
+# Font settings
 font_path = "c:/Windows/Fonts/malgun.ttf"
 font_name = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font_name)
@@ -22,7 +22,7 @@ edu = pd.read_csv(file_path, header=None)
 edu = edu.iloc[:, 1]
 edu = edu.rename('교육인프라(수)')
 #%%
-# 0으로 값 변경
+# Change value to 0
 #edu.iloc[:, 0] = 0
 #%% 
 

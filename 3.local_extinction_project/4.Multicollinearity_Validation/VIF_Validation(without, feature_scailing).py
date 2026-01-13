@@ -4,16 +4,16 @@ Created on Thu Jul 25 09:17:24 2024
 
 @author: Shin
 """
-# 다중공선성 VIF검정 및 회귀분석을 통해 확인 
-# 다중공선성(multicollinearity) : 하나의 독립변수가 다른 여러 개의 독립변수들로 잘 예측되는 경우
-# 다중공선성이 있으면,
-#계수 추정이 잘 되지 않거나 불안정해져서 데이터가 약간만 바뀌어도 추정치가 크게 달라질 수 있다
-#계수가 통계적으로 유의미하지 않은 것처럼 나올 수 있다
-# VIF 검정은 다중공선성이 추정 기울기 계수의 표준오차를 얼마나 증가시켰는지를 측정하는 지표
-#엄밀한 기준은 없으나 보통 10보다 크면 다중공선성이 있다고 판단(5를 기준으로 하기도 함)
+# Multicollinearity confirmed through VIF test and regression analysis
+# Multicollinearity: When one independent variable is well predicted by several other independent variables.
+# If there is multicollinearity,
+# Coefficient estimates may be poor or unstable, so even a slight change in the data can cause the estimates to vary significantly.
+# It may appear that the coefficient is not statistically significant.
+# The VIF test is an indicator that measures how much multicollinearity increases the standard error of the estimated slope coefficient.
+# There is no strict standard, but if it is greater than 10, it is generally considered to be multicollinearity (5 is sometimes used as the standard).
 
-# df : 교육_2015_전국 (교육변수통합)
-# df_p : 2015_개선소멸지수를'2015~2023개선소멸지수'에서 추출하여 excel로 저장하였음. 
+# df: Education_2015_National (education variable integration)
+# df_p: The 2015_improvement extinction index was extracted from the '2015~2023 improvement extinction index' and saved in Excel.
 import pandas as pd
 
 file_path = "C:/Users/Shin/Documents/Final_Project/Data/교육_전국/교육_연도별_전국통합/교육/EXCEL/교육_2015_전국.xlsx"
@@ -22,14 +22,14 @@ df = pd.read_excel(file_path, engine='openpyxl')
 df_p = pd.read_excel(file_path_1, engine='openpyxl')
     
 #%%
-#폰트 설정
+# Font settings
 from matplotlib import font_manager, rc
 font_path = "c:/Windows/Fonts/malgun.ttf"
 font_name = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font_name)
 #%%
 
-# 상관관계 분석 2015 년도 교원_1인당_학생수와 2015 지방소멸지수 상관관계  : 
+# Correlation analysis Correlation between the number of students per teacher in 2015 and the local extinction index in 2015:
 
 '''
 ''교원_1인당_학생수_유치원', '교원_1인당_학생수_초등학교', '교원_1인당_학생수_중학교', '교원_1인당_학생수_고등학교'
@@ -41,7 +41,7 @@ import seaborn as sns
 import pandas as pd
 import statsmodels.api as sm
 #%%
-# 2015지방소멸위험지수 포함 
+# Including the 2015 Fat Loss Risk Index
 '''
 df['2015'] = df_p['2015']
 
@@ -52,10 +52,10 @@ plt.show()
 
 sns.pairplot(df[['교원_1인당_학생수_유치원', '교원_1인당_학생수_초등학교', '교원_1인당_학생수_중학교', '교원_1인당_학생수_고등학교']])
 plt.show()
-# 많은 통계 소프트웨어와 라이브러리는 절편을 자동으로 포함하지만, 
-#statsmodels의 OLS (Ordinary Least Squares) 함수는 기본적으로 독립 변수 행렬 𝑋에 절편을 포함시키지 않습니다. 
-#따라서, 직접 절편을 추가해 주어야 합니다.
-df['intercept'] = 1 #(절편) 
+# Many statistical software and libraries automatically include the intercept, but
+# The Ordinary Least Squares (OLS) function in statsmodels does not include an intercept in the independent variable matrix 𝑋 by default.
+# Therefore, sections must be added manually.
+df['intercept'] = 1 # (intercept)
 model = sm.OLS(df_p['2015'], df[['교원_1인당_학생수_유치원', '교원_1인당_학생수_초등학교', '교원_1인당_학생수_중학교', '교원_1인당_학생수_고등학교']])
 
 
@@ -91,8 +91,8 @@ Notes:
 [1] R² is computed without centering (uncentered) since the model does not contain a constant.
 [2] Standard Errors assume that the covariance matrix of the errors is correctly specified.
 '''
-# 귀무가설은 차이/영향력/연관성이 없다고 설정하고 대립가설은 차이/영향력/연관성이 있다고 설정한다  
-# p-value 값이 0.05미만의 의미는 표본의 통계치가 귀무가설과 같이 나올 확률이 5%미만 즉, 귀무가설을 기각하고 대립가설을 채택
+# The null hypothesis is set that there is no difference/influence/connection, and the alternative hypothesis is set that there is a difference/influence/connection.
+# A p-value value of less than 0.05 means that the probability that the sample's statistics come out the same as the null hypothesis is less than 5%, that is, the null hypothesis is rejected and the alternative hypothesis is adopted.
 '''
 Coefficients and p-values:
 
@@ -111,7 +111,7 @@ Coefficients and p-values:
 그러나 초등학교, 중학교, 고등학교의 경우, 교원 1인당 학생 수와 종속 변수 간의 유의미한 관계는 발견되지 않았습니다.
 전반적으로 모델은 2015년 데이터의 약 49.4%를 설명할 수 있지만, 일부 독립 변수의 영향은 통계적으로 유의미하지 않습니다.'''
 #%%
-#VIF 수치를 확인하는 python 코드:
+# Python code to check VIF numbers:
 '''
 VIF 값이 (10 이상의 값) 경우, 다중공선성을 고려하여 해당 변수를 적절히 제외 하였지만
  본 연구에서는 머신러닝 분류 모델(K-Fold)활용 하여 변수 간 상관관계에 영향을 줄이고,
@@ -136,14 +136,14 @@ print(vif)
 2   87.481160   교원_1인당_학생수_중학교
 3   37.835847  교원_1인당_학생수_고등학교'''
 #%%
-# 상관관계 분석 2015 년도 교원_1인당_학생수와 2015 지방소멸지수 상관관계:
+# Correlation analysis Correlation between the number of students per teacher in 2015 and the local extinction index in 2015:
     
 sns.pairplot(df[[    '유치원_학급당 학생 수 (명)', '초등학교_학급당 학생 수 (명)', '중학교_학급당 학생 수 (명)','고등학교_학급당 학생 수 (명)']])
 plt.show()
-# 많은 통계 소프트웨어와 라이브러리는 절편을 자동으로 포함하지만, 
-#statsmodels의 OLS (Ordinary Least Squares) 함수는 기본적으로 독립 변수 행렬 𝑋에 절편을 포함시키지 않습니다. 
-#따라서, 직접 절편을 추가해 주어야 합니다.
-df['intercept'] = 1 #(절편) 
+# Many statistical software and libraries automatically include the intercept, but
+# The Ordinary Least Squares (OLS) function in statsmodels does not include an intercept in the independent variable matrix 𝑋 by default.
+# Therefore, sections must be added manually.
+df['intercept'] = 1 # (intercept)
 model = sm.OLS(df_p['2015'], df[['유치원_학급당 학생 수 (명)', '초등학교_학급당 학생 수 (명)', '중학교_학급당 학생 수 (명)','고등학교_학급당 학생 수 (명)']])
 
 results = model.fit()
@@ -213,16 +213,16 @@ print(vif)
 2  109.096652   중학교_학급당 학생 수 (명)
 3   50.853184  고등학교_학급당 학생 수 (명)'''
 #%%
-# 상관관계 분석 2015 년도 사설학원과 2015 지방소멸지수 상관관계:
+# Correlation analysis Correlation between 2015 private academies and 2015 local extinction index:
     
-#'학교교과 교습학원 (개)', '평생직업 교육학원 (개)', '사설학원당 학생수 (명)','유치원생 수', '초등학생 수'   
+# ‘School subject teaching academies (number)’, ‘Lifelong vocational education academies (number)’, ‘Number of students per private academy (persons)’, ‘Number of kindergarten students’, ‘Number of elementary school students’
  
 sns.pairplot(df[['학교교과 교습학원 (개)', '평생직업 교육학원 (개)', '사설학원당 학생수 (명)']])
 plt.show()
-# 많은 통계 소프트웨어와 라이브러리는 절편을 자동으로 포함하지만, 
-#statsmodels의 OLS (Ordinary Least Squares) 함수는 기본적으로 독립 변수 행렬 𝑋에 절편을 포함시키지 않습니다. 
-#따라서, 직접 절편을 추가해 주어야 합니다.
-df['intercept'] = 1 #(절편) 
+# Many statistical software and libraries automatically include the intercept, but
+# The Ordinary Least Squares (OLS) function in statsmodels does not include an intercept in the independent variable matrix 𝑋 by default.
+# Therefore, sections must be added manually.
+df['intercept'] = 1 # (intercept)
 model = sm.OLS(df_p['2015'], df[['학교교과 교습학원 (개)', '평생직업 교육학원 (개)', '사설학원당 학생수 (명)']])
 
 results = model.fit()
@@ -275,16 +275,16 @@ VIF_Factor        Feature
 1    5.592409  평생직업 교육학원 (개)
 2    1.013003  사설학원당 학생수 (명)'''
 #%%
-# 상관관계 분석 2015 년도 사설학원과 2015 지방소멸지수 상관관계:
+# Correlation analysis Correlation between 2015 private academies and 2015 local extinction index:
 
 '유치원생 수', '초등학생 수' 
 
 sns.pairplot(df[['유치원생 수', '초등학생 수']])
 plt.show()
-# 많은 통계 소프트웨어와 라이브러리는 절편을 자동으로 포함하지만, 
-#statsmodels의 OLS (Ordinary Least Squares) 함수는 기본적으로 독립 변수 행렬 𝑋에 절편을 포함시키지 않습니다. 
-#따라서, 직접 절편을 추가해 주어야 합니다.
-df['intercept'] = 1 #(절편) 
+# Many statistical software and libraries automatically include the intercept, but
+# The Ordinary Least Squares (OLS) function in statsmodels does not include an intercept in the independent variable matrix 𝑋 by default.
+# Therefore, sections must be added manually.
+df['intercept'] = 1 # (intercept)
 model = sm.OLS(df_p['2015'], df[['유치원생 수', '초등학생 수']])
 
 results = model.fit()
@@ -333,7 +333,7 @@ print(vif)
 1    16.69906  초등학생 수
 '''
 #%%
-# 상관관계 분석 2015 년도교육변수 통합과 2015 지방소멸지수 상관관계:
+# Correlation analysis Correlation between 2015 education variable integration and 2015 local extinction index:
 '''
    '교원_1인당_학생수_유치원', '교원_1인당_학생수_초등학교', '교원_1인당_학생수_중학교', '교원_1인당_학생수_고등학교',
     '유치원_학급당 학생 수 (명)', '초등학교_학급당 학생 수 (명)', '중학교_학급당 학생 수 (명)','고등학교_학급당 학생 수 (명)',
@@ -344,10 +344,10 @@ sns.pairplot(df[['교원_1인당_학생수_유치원', '교원_1인당_학생수
  '유치원_학급당 학생 수 (명)', '초등학교_학급당 학생 수 (명)', '중학교_학급당 학생 수 (명)','고등학교_학급당 학생 수 (명)',
  '학교교과 교습학원 (개)', '평생직업 교육학원 (개)', '사설학원당 학생수 (명)','유치원생 수', '초등학생 수']])
 plt.show()
-# 많은 통계 소프트웨어와 라이브러리는 절편을 자동으로 포함하지만, 
-#statsmodels의 OLS (Ordinary Least Squares) 함수는 기본적으로 독립 변수 행렬 𝑋에 절편을 포함시키지 않습니다. 
-#따라서, 직접 절편을 추가해 주어야 합니다.
-df['intercept'] = 1 #(절편) 
+# Many statistical software and libraries automatically include the intercept, but
+# The Ordinary Least Squares (OLS) function in statsmodels does not include an intercept in the independent variable matrix 𝑋 by default.
+# Therefore, sections must be added manually.
+df['intercept'] = 1 # (intercept)
 model = sm.OLS(df_p['2015'], df[['교원_1인당_학생수_유치원', '교원_1인당_학생수_초등학교', '교원_1인당_학생수_중학교', '교원_1인당_학생수_고등학교',
  '유치원_학급당 학생 수 (명)', '초등학교_학급당 학생 수 (명)', '중학교_학급당 학생 수 (명)','고등학교_학급당 학생 수 (명)',
  '학교교과 교습학원 (개)', '평생직업 교육학원 (개)', '사설학원당 학생수 (명)','유치원생 수', '초등학생 수']])

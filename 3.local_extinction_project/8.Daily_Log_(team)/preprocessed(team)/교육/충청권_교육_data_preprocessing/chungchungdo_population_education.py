@@ -23,8 +23,8 @@ df_sejong.to_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/sejong_data/
 #'chungbuk'
 
 df = pd.read_csv('D:/WORKSPACE/github/MYSELF24/Python/Final_project/csv_data/population.csv')
-# df_sejong = df.iloc[[11]] 가로버전
-df_sejong = df.iloc[11] # 세로버전 transpose()필요없음
+# df_sejong = df.iloc[[11]] Horizontal version
+df_sejong = df.iloc[11] # No need for transpose() in vertical version
 df_sejong =df_sejong[1:]
 
 df_sejong.to_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/chungbuk_data/chungbuk_pop.csv")
@@ -43,7 +43,7 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
 import pandas as pd
 
-# 폰트설정
+# Font settings
 font_path = "c:/Windows/Fonts/malgun.ttf"
 font_name = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font_name)
@@ -53,17 +53,17 @@ rc('font', family=font_name)
 file_path = f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/chungbuk_data/result_chungbuk.csv"
 edu = pd.read_csv(file_path, header=None)
 edu = edu.iloc[:, 1]
-#edu.columns = ['교육인프라(수)']
+# edu.columns = ['Education Infrastructure (Wed)']
 edu = edu.rename('교육인프라(수)')
 #%%
-# 0으로 값 변경
+# Change value to 0
 #edu.iloc[:, 0] = 0
 #%% 
 
 file_path = f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/chungbuk_data/chungbuk_pop.csv"
 pop = pd.read_csv(file_path)
 pop = pop.iloc[:, 1]
-#pop.columns = ['인구(수)']
+# pop.columns = ['Population(Number)']
 pop = pop.rename('인구(수)')
 #%%
 chungbuk = pd.concat([edu, pop],axis=1)

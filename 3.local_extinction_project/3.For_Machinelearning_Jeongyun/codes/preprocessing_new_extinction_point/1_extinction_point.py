@@ -9,35 +9,35 @@ import pandas as pd
 
 df = pd.read_csv('행정구역별_5세별_주민등록인구_2015-2023.csv', encoding='euc-kr')
 
-# 결측치 확인
+# Check for missing values
 df.info()
 # Index: 7530 entries, 0 to 11294
 # Data columns (total 12 columns):
 #  #   Column      Non-Null Count  Dtype  
 # ---  ------      --------------  -----  
-#  0   행정구역(동읍면)별  7530 non-null   object 
-#  1   5세별         7530 non-null   object 
-#  2   항목          7530 non-null   object 
-#  3   2015 년      7410 non-null   float64
-#  4   2016 년      7410 non-null   float64
-#  5   2017 년      7410 non-null   float64
-#  6   2018 년      7410 non-null   float64
-#  7   2019 년      7410 non-null   float64
-#  8   2020 년      7470 non-null   float64
-#  9   2021 년      7470 non-null   float64
-#  10  2022 년      7470 non-null   float64
-#  11  2023 년      7470 non-null   float64
+# 0 7530 non-null objects by administrative district (dong-eup-myeon)
+# 1   5세별         7530 non-null   object
+# 2 items 7530 non-null object
+# 3 2015 7410 non-null float64
+# 4 2016 7410 non-null float64
+# 5 2017 7410 non-null float64
+# 6 2018 7410 non-null float64
+# 7 2019 7410 non-null float64
+# 8 2020 7470 non-null float64
+# 9 2021 7470 non-null float64
+# 10 2022 7470 non-null float64
+# 11 2023 7470 non-null float64
 
 # %%
 
-# 마지막 열 제거, 필요없는 열 제거
+# Remove last column, remove unnecessary column
 df = df.iloc[:,:-1]
 df = df.drop(columns='단위')
 
-# 데이터 탐색
+# Data Exploration
 df['행정구역(동읍면)별'].unique()
 
-# 필요없는 행 제거
+# Remove unnecessary rows
 df = df[df['행정구역(동읍면)별'] != '전국']
 df = df[df['항목'] != '남자인구수[명]']
 
@@ -45,7 +45,7 @@ df = df[df['행정구역(동읍면)별'] != '북부출장소']
 df = df[df['행정구역(동읍면)별'] != '동해출장소']
 df.info()
 # %%
-# 시군구 중복 지명 구분 처리
+# Processing of duplicate city/county/district nominations
 
 seoul_dstr = '강남구, 강동구, 강북구, 강서구, 관악구, 광진구, 구로구, 금천구, 노원구, 도봉구, 동대문구, 동작구, 마포구, 서대문구, 서초구, 성동구, 성북구, 송파구, 양천구, 영등포구, 용산구, 은평구, 종로구, 중구, 중랑구'.split(', ')
 incheon_dstr = '중구, 동구, 미추홀구, 연수구, 남동구, 부평구, 계양구, 서구, 강화군, 옹진군, 남구'.split(', ')
@@ -65,7 +65,7 @@ gyungbuk_cities = '포항시,경주시,김천시,안동시,구미시,영주시,�
 gyungnam_cities = '창원시,진주시,통영시,사천시,김해시,밀양시,거제시,양산시,의령군,함안군,창녕군,고성군,남해군,하동군,산청군,함양군,거창군,합천군'.split(',')
 jeju_cities = '제주시,서귀포시'.split(',')
 # df.head(45)
-# 행정구역 순서 파악하기
+# Understanding the order of administrative districts
 cities_dict = {}
 cities = '서울특별시, 부산광역시, 인천광역시, 대구광역시, 대전광역시, 광주광역시, 울산광역시, 경기도, 충청북도, 충청남도, 전라남도, 경상북도, 경상남도, 강원특별자치도, 전북특별자치도, 제주특별자치도'.split(', ')
 for city in cities:
@@ -73,14 +73,14 @@ for city in cities:
     cities_dict[city] = index
     print(city, index)
     
-# 순서대로 시도 목록 정렬
+# Sort list of attempts in order
 cities_dict = dict(sorted(cities_dict.items(), key=lambda x: x[1]))
 # cities_tup = sorted(cities_dict.items(), key=lambda x: x[1])
 
-# 시도명-시군구list 형태로 딕셔너리 생성
+# Create a dictionary in the form of city/city/city/county/gu list.
 cities_dstr = dict(zip(list(cities_dict.keys()),[seoul_dstr,busan_dstr,daegu_dstr,incheon_dstr,gwangju_dstr,daejeon_dstr,ulsan_dstr,gyunggi_cities, gangwon_cities,chungbuk_cities,chungnam_cities,jeonbuk_cities,jeonnam_cities,gyungbuk_cities,gyungnam_cities,jeju_cities]))
 
-# 시군구 앞에 시도명을 접두사로 추가
+# Add the name of the city or city as a prefix before the city, county or district.
 i = 0
 index = list(cities_dict.values())
 for city in cities_dstr:
@@ -91,34 +91,34 @@ for city in cities_dstr:
         break
     df.loc[:index[i],'행정구역(동읍면)별'] = df['행정구역(동읍면)별'].apply(lambda x: f'{city} {x}' if x in cities_dstr[city] else x)
 # %%
-# 인천광역시 남구(현 미추홀구) 데이터 결합
+# Combine data from Nam-gu, Incheon Metropolitan City (currently Michuhol-gu)
 df_michuholgu = df[df['행정구역(동읍면)별'] =='인천광역시 미추홀구']
 df_namgu = df[df['행정구역(동읍면)별'] =='인천광역시 남구'].set_index(df_michuholgu.index)
 df2 = df.drop(df[df['행정구역(동읍면)별'] =='인천광역시 남구'].index)
 
 df2.update(df_namgu[df_namgu.notna()], overwrite=False)
 
-# 경상북도 군위군(현 대구광역시) 데이터 결합
+# Combine data from Gunwi-gun, Gyeongsangbuk-do (currently Daegu Metropolitan City)
 gunwi_daegu = df2[df2['행정구역(동읍면)별'] =='대구광역시 군위군']
 gunwi_gyungbuk = df2[df2['행정구역(동읍면)별'] =='군위군'].set_index(gunwi_daegu.index)
 df3 = df2.drop(df2[df2['행정구역(동읍면)별'] =='군위군'].index)
 
 df3.update(gunwi_gyungbuk[gunwi_gyungbuk.notna()], overwrite=False)
 
-# 결측치 확인
+# Check for missing values
 df3.info()
     
 # %%
 '''가임기 여성 데이터 전처리'''
-# '5세별' 열에서 특정 연령대에 해당하는 데이터 필터링
+# Filter data for specific age groups in the 'By 5 years' column
 age_woman = ['15 - 19세', '20 - 24세', '25 - 29세', '30 - 34세', '35 - 39세', '40 - 44세', '45 - 49세']
 
-# 가임기 여성인구 필터링
+# Filtering of female population of childbearing age
 df_filtered = df3[df3['5세별'].isin(age_woman)]
 woman_df = df_filtered[df_filtered['항목'] == '여자인구수[명]']
 woman_df.drop(columns=['항목', '5세별'], inplace=True)
 
-# 행정구역별 합계 계산
+# Total calculation by administrative district
 woman_df_grouped = woman_df.groupby('행정구역(동읍면)별').sum()
 
 # %%
@@ -127,17 +127,17 @@ woman_df_grouped = woman_df.groupby('행정구역(동읍면)별').sum()
 oldman_df = df3[~df3['5세별'].isin(age_woman)]
 oldman_df.drop(columns=['항목', '5세별'], inplace=True)
 
-# 행정구역별 합계 계산
+# Total calculation by administrative district
 oldman_df_grouped = oldman_df.groupby('행정구역(동읍면)별').sum()
 
 # %%
 '''지역별 소멸위험지수 계산'''
 ext_point = woman_df_grouped / oldman_df_grouped 
-# '전국'데이터 제거
+# Removal of ‘nationwide’ data
 
 
 # %%
-# 엑셀파일 저장
+# Save Excel file
 ext_point.to_excel("기존_소멸위험지수_2015-2023.xlsx")
 # csv
 ext_point.to_csv("기존_소멸위험지수_2015-2023.csv")

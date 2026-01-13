@@ -10,7 +10,7 @@ df1= pd.read_excel("D:/WORKSPACE/github/MYSELF24/Python/MiniProject-May/Excel/se
 numeric_df = df1.select_dtypes(include='number')
 seoul_best = numeric_df.quantile([0.25, 0.50, 0.75, 1.00])
 
-# 결과 출력
+# Result output
 print("각 열의 사분위수:")
 print(seoul_best)
 '''
@@ -30,17 +30,17 @@ def calculate_column_means(data):
     means = []
 
     for df in data:
-        # 각 데이터프레임의 첫 번째 열을 제외한 나머지 열에 대해 평균 계산
+        # Calculate the average of all columns except the first column in each dataframe
         column_means = df.iloc[:, 1:7].mean()
         means.append(column_means)
     
     return means
 
-# 함수 호출하여 각 데이터프레임의 열 평균 계산
+# Calculate the column average of each data frame by calling a function
 data = [df1]
 means = calculate_column_means(data)
 
-# 결과 출력
+# Result output
 for i, mean in enumerate(means):
     print(f"df{i+1}의 각 열의 평균:")
     print(mean)

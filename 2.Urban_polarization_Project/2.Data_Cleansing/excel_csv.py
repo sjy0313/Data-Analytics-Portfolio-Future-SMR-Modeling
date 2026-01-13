@@ -8,21 +8,21 @@ Created on Tue Jun 25 11:03:54 2024
 import os
 import pandas as pd
 
-# 엑셀 파일 경로와 CSV 파일 경로 지정
+# Specify Excel file path and CSV file path
 excel_file_path = r'D:/WORKSPACE/github/MYSELF24/Python/best_copy.xlsx'
 pd.read_ecel(xcel_file_path)
 csv_file_path = r'D:/WORKSPACE/github/MYSELF24/Python/best.csv'
 
-# 파일이 존재하는지 확인
+# Check if file exists
 if os.path.isfile(excel_file_path):
     print("파일이 존재합니다.")
 else:
     print("파일이 존재하지 않습니다. 경로를 다시 확인하세요.")
 
-# 엑셀 파일을 읽어오기
+# Read Excel file
 try:
     df = pd.read_excel('D:/WORKSPACE/github/MYSELF24/Python/best_copy.xlsx', engine='openpyxl')
-    # 데이터프레임을 CSV 파일로 저장
+    # Save data frame as CSV file
     df.to_csv('D:/WORKSPACE/github/MYSELF24/Python/best.csv', index=False)
     print("변환이 완료되었습니다!")
 except FileNotFoundError:

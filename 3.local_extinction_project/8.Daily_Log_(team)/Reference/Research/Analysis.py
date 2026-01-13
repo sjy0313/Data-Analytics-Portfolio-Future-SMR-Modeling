@@ -5,21 +5,21 @@ Created on Thu Apr 11 13:36:19 2024
 @author: Shin
 """
 
-# 장르와 위에서 web_scroll 함수를 활용해 도출한 다른 요소들(author/product/shortreview)의 결합
+# Combination of genre and other elements (author/product/shortreview) derived using the web_scroll function above
 
-# MP-Genre-final.py 에서만든 장르 dataframe 가져오기
+# Import genre dataframe created in MP-Genre-final.py
 
 import pandas as pd
 df_features = pd.read_excel('./project/book_info.xlsx')
 df_genre = pd.read_excel('./Project/Genrelist_of_bestseller2023.xlsx')
-# 열 기준 병합하기
+# Merge by column
 
 df_bestseller2023 = pd.concat([df_features, df_genre], axis=1)
 
-# 몇가지 고유의 장르들이 2023년 배스트샐러에 채택 되었는지
+# How many unique genres have been selected for Best Salary in 2023?
 genres = df_genre["장르"].unique()
 print(len(genres)) # 14
-# 요약정보
+# Summary information
 df_bestseller2023.describe()
 '''
          Product                                Author shortreview   장르
@@ -28,12 +28,12 @@ unique       100                                    99           8   14
 top     세이노의 가르침  David Cho ·  해커스어학연구소   · 2023.07.24        도움돼요   소설
 freq           1                                     2          48   22
 '''
-# 총 8종류의 한줄평(shortreview)과 14종류의 장르가 존재함을 알 수 있고
-# 48개의 (도움돼요)한줄평으로 가장많은 횟수를 차지했으며
-# 22권의 소설책 확인되었다 직접 확인해보자.
+# You can see that there are a total of 8 types of shortreviews and 14 types of genres.
+# It took up the most number of comments with 48 (helpful) one-line comments.
+# 22 novels have been confirmed. Let’s check them out for ourselves.
 #%%
-# 장르 별 bestseller책들이 차지하는 비중을 구해보자.
-# 시리즈 객체의 고유값개수를 세는데 사용 : value_counts() 매서드
+# Let’s find the proportion of bestseller books by genre.
+# Used to count the number of unique values ​​of a series object: value_counts() method
 df_bestseller2023['장르'].value_counts() 
 '''
 장르

@@ -4,12 +4,12 @@ Created on Wed Jun 26 09:20:21 2024
 
 @author: Shin
 """
-# 사용자 분류
+# User classification
 
 import pandas as pd
 
-# columns_name : 나이 / 예산 / 가족 구성원 수 / 선호 인프라
-# 예시 데이터프레임 생성
+# columns_name: Age / Budget / Number of family members / Preferred infrastructure
+# Create an example dataframe
 data = [
     [20, 15000, 1, 'Subway', 'Supermarket'],
     [30, 30000, 3, 'Primary_school', 'General_hospital'],

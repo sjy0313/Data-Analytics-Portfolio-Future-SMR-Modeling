@@ -20,7 +20,7 @@ df_learn = pd.read_excel(desired_path)
 
 #%%
 
-# 소멸위험등급을 수치형으로 변환
+# Convert extinction risk level to numeric form
 grade_mapping = {'A': 1, 'B': 2, 'C': 3, 'D': 4}
 df_learn['소멸위험등급'] = df_learn['소멸위험등급'].map(grade_mapping)
 
@@ -28,22 +28,22 @@ df_learn['소멸위험등급'] = df_learn['소멸위험등급'].map(grade_mappin
 
 all_features = list(df_learn.columns[2:81])
 
-# 특징 변수(X)와 타겟 변수(y) 분리
+# Separate feature variables (X) and target variables (y)
 X = df_learn[all_features]
-y = df_learn['소멸위험등급']                              # 종속변수
+y = df_learn['소멸위험등급']                              # dependent variable
 
 
 #%%
 
-print(df_learn.isnull().sum())  # 결측치 확인
+print(df_learn.isnull().sum())  # Check for missing values
 
 
 #%%
 
-# 데이터셋 분할
+# Dataset Splitting
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Gradient Boosting Regressor 모델 초기화
+# Gradient Boosting Regressor model initialization
 model = GradientBoostingClassifier()
 
 """
@@ -59,7 +59,7 @@ model = GradientBoostingClassifier()
 
 ‘subsample’: 각 트리를 학습시키는 데 사용되는 샘플의 비율입니다. 이 경우, 0.5에서 1.0 사이의 값을 동일한 간격으로 6개의 값으로 나누어 탐색합니다.
 """
-# 하이퍼파라미터 범위 설정
+# Hyperparameter range setting
 param_dist = {
     'n_estimators': np.arange(50, 500, 50),
     'learning_rate': np.linspace(0.01, 0.2, 20),
@@ -70,7 +70,7 @@ param_dist = {
 }
 
 
-# RandomizedSearchCV 설정
+# RandomizedSearchCV settings
 """
 model: 튜닝할 모델입니다. 여기서는 GradientBoostingRegressor 모델을 사용하고 있습니다.
 
@@ -92,14 +92,14 @@ error_score: 유효하지 않은 매개변수 조합에 대한 오류 점수입�
 random_search = RandomizedSearchCV(model, param_distributions=param_dist, n_iter=100, cv=5, scoring='neg_mean_squared_error', random_state=42, n_jobs=-1, error_score='raise')
 
 
-# 모델 학습
+# model training
 random_search.fit(X_train, y_train)
 
 
-# 최적의 하이퍼파라미터 출력
+# Optimal hyperparameter output
 print("Best hyperparameters:", random_search.best_params_)
 
-# 최적의 모델로 예측 및 평가
+# Prediction and evaluation with optimal model
 best_model = random_search.best_estimator_
 y_pred = best_model.predict(X_test)
 mse = mean_squared_error(y_test, y_pred)
@@ -107,7 +107,7 @@ print("Mean Squared Error:", mse)
 
 #%%
 
-#저장
+# save
 
 with open('best_model.pkl', 'wb') as f:
     pickle.dump(best_model, f)
@@ -126,26 +126,26 @@ from sklearn.model_selection import RandomizedSearchCV
 
 df = pd.read_csv("./preprocessed/merged_data.csv", index_col=0)
 
-# 2021년 데이터를 테스트 데이터로 분리
+# Separate 2021 data into test data
 test = df[df['행정구역'].str.contains('_2021')]
 
 df = df[~df['행정구역'].str.contains('_2021')]
 
-# LabelEncoder 클래스를 불러옵니다.
+# Load the LabelEncoder class.
 from sklearn.preprocessing import LabelEncoder
 
-# LabelEncoder를 객체로 생성합니다.
+# Create LabelEncoder as an object.
 le = LabelEncoder()
 
-# fit_transform()으로 라벨인코딩을 수행합니다.
+# Perform label encoding with fit_transform().
 df['소멸위험등급'] = le.fit_transform(df['소멸위험등급'])
 
 y = df['소멸위험등급']
 X = df.iloc[:,1:-2]
 
-# 추가 전처리
+# Additional preprocessing
 X = X.replace("Ⅹ",0)
-# Object 타입 열들 numeric으로 변환
+# Convert Object type columns to numeric
 
 for col in X.columns:
     if X[col].dtype == 'object':
@@ -155,7 +155,7 @@ for col in X.columns:
 
 # %%
 '''스케일링'''
-# Min-Max 스케일링
+# Min-Max scaling
 from sklearn.preprocessing import MinMaxScaler
 scaler = MinMaxScaler()
 scaled = scaler.fit_transform(X)
@@ -182,23 +182,23 @@ desired_path = "your_link"
 
 df_learn = pd.read_excel(desired_path)
 
-# 소멸위험등급을 수치형으로 변환
+# Convert extinction risk level to numeric form
 grade_mapping = {'A': 1, 'B': 2, 'C': 3, 'D': 4}
 df_learn['소멸위험등급'] = df_learn['소멸위험등급'].map(grade_mapping)
 
 df_learn.replace('-', 0, inplace=True)
 
-# 특징 변수(X)와 타겟 변수(y) 분리
-X = df_learn[['소멸위험지수', '교원_1인당_학생수_유치원', '교원_1인당_학생수_초등학교', '교원_1인당_학생수_중학교', '교원_1인당_학생수_고등학교', '유치원_학급당 학생 수 (명)', '초등학교_학급당 학생 수 (명)', '중학교_학급당 학생 수 (명)', '고등학교_학급당 학생 수 (명)', '학교교과 교습학원 (개)', '평생직업 교육학원 (개)', '사설학원당 학생수 (명)', '유치원생 수' , '초등학생 수', '종합병원', '병원', '의원', '치과병(의)원', '한방병원', '한의원', '인구 천명당 의료기관병상수(개)', '총병상수 (개)', '하수도보급률', '상수도보급률']]  # 독립변수
+# Separate feature variables (X) and target variables (y)
+X = df_learn[['소멸위험지수', '교원_1인당_학생수_유치원', '교원_1인당_학생수_초등학교', '교원_1인당_학생수_중학교', '교원_1인당_학생수_고등학교', '유치원_학급당 학생 수 (명)', '초등학교_학급당 학생 수 (명)', '중학교_학급당 학생 수 (명)', '고등학교_학급당 학생 수 (명)', '학교교과 교습학원 (개)', '평생직업 교육학원 (개)', '사설학원당 학생수 (명)', '유치원생 수' , '초등학생 수', '종합병원', '병원', '의원', '치과병(의)원', '한방병원', '한의원', '인구 천명당 의료기관병상수(개)', '총병상수 (개)', '하수도보급률', '상수도보급률']]  # independent variable
 y = df_learn['소멸위험등급']   
 
-# 데이터셋 분할
+# Dataset Splitting
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Gradient Boosting Regressor 모델 초기화
+# Gradient Boosting Regressor model initialization
 model = GradientBoostingClassifier()
 
-# 하이퍼파라미터 범위 설정
+# Hyperparameter range setting
 param_dist = {
     'n_estimators': np.arange(50, 500, 50),
     'learning_rate': np.linspace(0.01, 0.2, 20),
@@ -208,16 +208,16 @@ param_dist = {
     'subsample': np.linspace(0.5, 1.0, 6)
 }
 
-# RandomizedSearchCV 설정
+# RandomizedSearchCV settings
 random_search = RandomizedSearchCV(model, param_distributions=param_dist, n_iter=100, cv=5, scoring='neg_mean_squared_error', random_state=42, n_jobs=-1, error_score='raise')
 
-# 모델 학습
+# model training
 random_search.fit(X_train, y_train)
 
-# 최적의 하이퍼파라미터 출력
+# Optimal hyperparameter output
 print("Best hyperparameters:", random_search.best_params_)
 
-# 최적의 모델로 예측 및 평가
+# Prediction and evaluation with optimal model
 best_model = random_search.best_estimator_
 y_pred = best_model.predict(X_test)
 mse = mean_squared_error(y_test, y_pred)

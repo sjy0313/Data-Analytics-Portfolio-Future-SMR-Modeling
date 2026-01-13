@@ -29,7 +29,7 @@ fig.show()
 
 
 import matplotlib.pyplot as plt
-# 01 : 지정된 폴더에서 설치된 폰트 꺼내서 matplotlip 그래프에 적용
+# 01: Retrieve the installed font from the specified folder and apply it to the matplotlip graph.
 import matplotlib.font_manager as fm
 from matplotlib import rc
 # set the default font for Matplotlib to a font file located at./NanumBarunGothic.ttf"
@@ -38,7 +38,7 @@ font_path = "./NanumBarunGothic.ttf"
 font_name = fm.FontProperties(fname=font_path).get_name()
 print(font_name)
 rc('font', family=font_name) 
-# 02 : windows > fonts 폴더에서 폰트 꺼내서 적용하기
+# 02: Remove and apply fonts from windows > fonts folder
 # font_files = fm.findSystemFonts(fontpaths=['C:/Windows/Fonts'])
 font_files = fm.findSystemFonts(fontpaths=['C:/Users/Shin/AppData/Local/Microsoft/Windows/Fonts'])
 for fpath in font_files:

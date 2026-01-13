@@ -15,11 +15,11 @@ df2= pd.read_excel("D:/WORKSPACE/github/MYSELF24/Python/MiniProject-May/seoulcit
 numeric_df = df1.select_dtypes(include='number')
 seoul_worst = numeric_df.quantile([0.25, 0.50, 0.75, 1.00])
 
-# 결과 출력
+# Result output
 print("각 열의 사분위수:")
 print(seoul_worst)
 
-# 5등급 
+# level 5
 '''
 각 열의 사분위수:
       Subway  Primary_School   ...  Supermarket    Park
@@ -33,7 +33,7 @@ print(seoul_worst)
 numeric_df = df2.select_dtypes(include='number')
 seoul_best = numeric_df.quantile([0.25, 0.50, 0.75, 1.00])
 
-# 결과 출력
+# Result output
 print("각 열의 사분위수:")
 print(seoul_best)
 '''각 열의 사분위수:
@@ -46,10 +46,10 @@ print(seoul_best)
 
 combined_df = seoul_worst.add(seoul_best, fill_value=0)
 
-# 각 열의 값을 2로 나누기
+# Divide the values ​​in each column by 2
 rank3 = combined_df / 2
 
-# 결과 출력
+# Result output
 print("3등급:")
 print(rank3)
 '''
@@ -77,22 +77,22 @@ dtype: float64
 #%%
 #int_means = means.astype(int)
 #%%
-# 평균
+# average
 def calculate_column_means(data):
     means = []
 
     for df in data:
-        # 각 데이터프레임의 첫 번째 열을 제외한 나머지 열에 대해 평균 계산
+        # Calculate the average of all columns except the first column in each dataframe
         column_means = df.iloc[:, 1:].mean()
         means.append(column_means)
     
     return means
 
-# 함수 호출하여 각 데이터프레임의 열 평균 계산
+# Calculate the column average of each data frame by calling a function
 data = [df1, df2]
 means = calculate_column_means(data)
 
-# 결과 출력
+# Result output
 for i, mean in enumerate(means):
     print(f"df{i+1}의 각 열의 평균:")
     print(mean)
@@ -102,22 +102,22 @@ for i, mean in enumerate(means):
 df3 = pd.read_excel("D:/WORKSPACE/github/MYSELF24/Python/MiniProject-May/seoulcity/worst_copy.xlsx")
 df4 = pd.read_excel("D:/WORKSPACE/github/MYSELF24/Python/MiniProject-May/seoulcity/best_copy.xlsx")
 
-#  중앙값
+# median
 def calculate_column_median(data):
     median = []
 
     for df in data:
-        # 각 데이터프레임의 첫 번째 열을 제외한 나머지 열에 대해 평균 계산
+        # Calculate the average of all columns except the first column in each dataframe
         column_median = df.iloc[:, 1:].median()
         median.append(column_median)
     
     return median
 
-# 함수 호출하여 각 데이터프레임의 열 평균 계산
+# Calculate the column average of each data frame by calling a function
 data = [df3, df4]
 median = calculate_column_median(data)
 
-# 결과 출력
+# Result output
 for i, median in enumerate(median):
     print(f"df{i+1}의 각 열의 중앙값:")
     print(median)
@@ -126,8 +126,8 @@ for i, median in enumerate(median):
 
 
 #%%
-# 서울시 가장 비싼 아파트로부터 인프라까지의 평균거리 : 
-rank5 = means[1].astype(int) # 12 ~ 30억
+# Average distance from the most expensive apartments in Seoul to infrastructure:
+rank5 = means[1].astype(int) # 1.2 ~ 3 billion
 print(rank5)
 '''
 Subway               425
@@ -140,7 +140,7 @@ Park                 974
 dtype: int32'''
 
 
-# 서울시 5등급 2~5억
+# Seoul City Grade 5 200-500 million
 rank1 = means[0].astype(int)
 print(rank1)
 '''

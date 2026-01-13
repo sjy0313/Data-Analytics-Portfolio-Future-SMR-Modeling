@@ -23,15 +23,15 @@ desired_path = f"{base_dir}/머신러닝_RawData/machine_learning_basedata_v0.2.
 df_learn = pd.read_excel(desired_path)
       
 
-# pickle 파일로부터 모델 로드
+# Load model from pickle file
 with open('best_model.pkl', 'rb') as f:
     loaded_model = pickle.load(f)
 
 all_features = list(df_learn.columns[2:])
 
 
-# 사용자 입력으로 예측
-st.write("## 사용자 입력으로 예측")
+# Predict with user input
+st.write("# # Predict based on user input")
 user_input = [st.slider(f"{feature}", min_value=0.0, max_value=100.0, value=0.0, ) for feature in all_features]
 
 if st.button("예측"):

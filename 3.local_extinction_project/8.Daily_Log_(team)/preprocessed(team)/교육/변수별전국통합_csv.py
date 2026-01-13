@@ -5,9 +5,9 @@ Created on Wed Jul 24 11:48:44 2024
 @author: Shin
 """
 
-# 파일 리스트 및 파라미터
-# files = ['유치원통합', '초등학교통합', '중학교통합', '고등학교통합']
-# params = '교육'
+# File list and parameters
+# files = ['Kindergarten integration', 'Elementary school integration', 'Middle school integration', 'High school integration']
+# params = 'Education'
 
 import pandas as pd
 annual_data = {str(year): pd.DataFrame() for year in range(2015, 2022)}
@@ -21,10 +21,10 @@ for year in range(2015, 2022):
     data['행정구역(동읍면)별'] = data.apply(lambda row: row[0] + ' ' + row[1], axis=1)
     cols = ['행정구역(동읍면)별'] + [col for col in data.columns if col not in ['행정구역(동읍면)별', '시도별', '시군별']]
     data = data[cols]
-    #data = data.drop(columns=['시도별', '시군별'])
+    # data = data.drop(columns=['By province', 'By city and county'])
     
     sejong = data.iloc[149:171, 1:]
-   # columns_to_average = sejong.columns[:-1]  # 마지막 열 제외
+   # columns_to_average = sejong.columns[:-1] # Excluding the last column
     sejong = sejong.replace('-', 0)
     sejong = sejong.apply(pd.to_numeric, errors='coerce')
     sejong_mean = sejong.mean().round(0)

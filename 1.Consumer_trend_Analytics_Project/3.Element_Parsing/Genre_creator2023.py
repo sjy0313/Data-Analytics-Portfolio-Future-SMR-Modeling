@@ -5,28 +5,28 @@ Created on Tue Apr  9 16:15:27 2024
 @author: Shin
 """
 
-# genre_creator는 년도 별 액셀파일에 따라 달라지는 장를 추출 module이다
-# excel파일을 웹에서 다운받아 '판매상품ID'에 해당하는 열을 교보문고에서 
-#상세페이지로 이동할 수 있는 https://product.kyobobook.co.kr/detail/ 과 결합하여
-# 상세페이지에서 장르 정보만 따와서 excel 파일로 저장해주는 모듈이다.
+# genre_creator is a module that extracts chapters that vary depending on the Excel file by year.
+# Download the excel file from the web and enter the column corresponding to ‘Sales Product ID’ at Kyobo Bookstore.
+# Combined with https://product.kyobobook.co.kr/detail/ to go to the detail page
+# This is a module that extracts only the genre information from the details page and saves it as an Excel file.
 
-# 변수 line: 
-#   19 : 저장된 액셀파일
-#   197: 저장할 액셀파일 이름 변경(연도)
+# Variable line:
+# 19: Saved Excel file
+# 197: Change Excel file name to be saved (year)
 
 
-# 제품코드 추출위해(제품코드가 html상 존재x) 액셀파일 불러오기:
+# To extract product code (product code exists in HTML), load Excel file:
 import pandas as pd
-df = pd.read_excel("./Miniproject_2_excel data/Genrelist_of_bestseller2023.xlsx") # 교보문고 액셀파일 불러오기
+df = pd.read_excel("./Miniproject_2_excel data/Genrelist_of_bestseller2023.xlsx") # Import Kyobo Bookstore Excel file
 df.head()
 #%%
-# 1위 부터 100위까지 상세페이지 링크 리스트자료형으로 변환.
-# glist = 판매상품ID를 list자료형으로 변환
+# Convert details page links from 1st to 100th to list data type.
+# glist = Convert sales product ID to list data type
 glist = df['판매상품ID'].tolist()
-# 상세페이지 format
-# [https://product.kyobobook.co.kr/detail/] + ['판매상품ID']   
-# genre_link(glist) : 100개의 상세페이지 링크 완성하는 함수
-# genre_data : 100개 상세페이지 링크
+# Detailed page format
+# [https://product.kyobobook.co.kr/detail/] + ['Sales Product ID']
+# genre_link(glist): Function to complete 100 detailed page links
+# genre_data: Links to 100 detailed pages
 
 def genre_link(glist):
     genre_data = []
@@ -40,8 +40,8 @@ genre_data = genre_link(glist)
 print(genre_data)
 #%%
 
-# spyder 과부화 방지를 위해 상세페이지링크 20개씩 끊어줌. 
-# s_list 20개씩 리스트로 변환(list안에 list) 
+# To prevent spyder overload, 20 detailed page links are cut off.
+# Convert s_list to a list of 20 items each (list within list)
 split_data = [
     genre_data[0:20],
     genre_data[20:40],
@@ -51,9 +51,9 @@ split_data = [
 ]
 print(split_data)
 #%%
-# 0~20개 상세페이지에서 장르 추출(dict자료형으로 추출)
-# genre_list1 : 상세페이지에서 장르(0~20개)에 대한 정보를 담을 []
-# chunk1 : 상세페이지 링크 20개
+# Extract genre from 0 to 20 detail pages (extracted as dict data type)
+# genre_list1: Contains information about genres (0 to 20) on the detail page []
+# chunk1: 20 detail page links
 from selenium.webdriver import Chrome
 from bs4 import BeautifulSoup 
 
@@ -64,26 +64,26 @@ chunk1 = split_data[0]
 
 for url in chunk1:
     driver.get(url) 
-    driver.implicitly_wait(3) # 3초대기(웹로드)
+    driver.implicitly_wait(3) # 3 seconds wait (web load)
             
     html = driver.page_source
     soup = BeautifulSoup(html, "lxml")
             
     genre_elements = soup.find_all('a', attrs={'class': 'btn_sub_depth'})
-    # 구성요소값 4개 구성
-    if len(genre_elements) >= 2: # 구성요소 2개 이상일 떄
-        second_genre = genre_elements[1].text.strip() # 요소값 중 2번 째 값 공백제거 후 추출
+    # Configuration of 4 component values
+    if len(genre_elements) >= 2: # When there are two or more components
+        second_genre = genre_elements[1].text.strip() # Extract the second value from element values ​​after removing spaces
         genre_list1.append({'장르': second_genre})
 
 driver.quit()
 
 #%%  
-# 21~40개 상세페이지링크에 대한 장르정보
+# Genre information for 21 to 40 detailed page links
 from selenium.webdriver import Chrome
 from bs4 import BeautifulSoup 
 from selenium.webdriver.chrome.options import Options 
 
-# 크롬옵션객체를 생성하여 파이썬 내부에서 작업처리
+# Process work within Python by creating a Chrome option object
 chrome_options = Options()
 chrome_options.add_argument("--headless") 
 driver = Chrome(options=chrome_options)
@@ -107,7 +107,7 @@ for url in chunk2:
 driver.quit()
 
 #%%
-# 41~60개 상세페이지링크에 대한 장르정보
+# Genre information for 41 to 60 detailed page links
 from selenium.webdriver import Chrome
 from bs4 import BeautifulSoup 
 from selenium.webdriver.chrome.options import Options
@@ -134,7 +134,7 @@ for url in chunk3:
 driver.quit()
 
 #%%
-# 61~80개 상세페이지링크에 대한 장르정보
+# Genre information for 61 to 80 detailed page links
 from selenium.webdriver import Chrome
 from bs4 import BeautifulSoup 
 from selenium.webdriver.chrome.options import Options
@@ -161,7 +161,7 @@ for url in chunk4:
 driver.quit()
 
 #%%
-# 81~100개 상세페이지링크에 대한 장르정보
+# Genre information for 81 to 100 detailed page links
 from selenium.webdriver import Chrome
 from bs4 import BeautifulSoup 
 from selenium.webdriver.chrome.options import Options

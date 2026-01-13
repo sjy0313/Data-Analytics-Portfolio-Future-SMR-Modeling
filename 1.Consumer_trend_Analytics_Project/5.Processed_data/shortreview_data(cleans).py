@@ -27,7 +27,7 @@ def book(year):
 import pandas as pd
 
 def book_info(year):
-    excel_bookinfo = []  # 각 연도별 도서 정보를 저장할 리스트
+    excel_bookinfo = []  # List to store book information for each year
 
     for year in range(2020, 2024):
         excel_bookinfo.append(pd.read_excel(f"./book_info{(year)}.xlsx"))
@@ -44,7 +44,7 @@ pd.read_excel('./Project/book_info(2023).xlsx')
 pd.read_excel('./book_info(2020).xlsx')
 
 
-sum(df1.duplicated(subset=['shortreview'])) # 중복된 행의 개수 : 95
+sum(df1.duplicated(subset=['shortreview'])) # Number of duplicate rows: 95
 
 
 

@@ -12,13 +12,13 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
-# 거리 및 가격 데이터 생성 (수정된 데이터)
+# Generate distance and price data (modified data)
 data = {
     'distance_to_school': [500, 1000, 1500, 2000, 2500],
     'area': [82, 82, 82, 82, 82],
     'distance to hospital': [1000, 2000, 3000, 4000, 5000],
     'distance to park': [500, 1000, 1500, 2000, 2500],
-    'price': [50000, 48000, 46000, 44000, 42000]  # 선형 관계로 수정된 가격
+    'price': [50000, 48000, 46000, 44000, 42000]  # Price modified by linear relationship
 }
 
 df = pd.DataFrame(data)
@@ -48,7 +48,7 @@ print(f"Mean Absolute Error: {mae}")
 print(f"Mean Squared Error: {mse}")
 print(f"R-squared: {r2}")
 
-# 예측데이터
+# Predicted data
 new_data = pd.DataFrame({
     'distance_to_school': [1500],
     'area': [82],
@@ -56,9 +56,9 @@ new_data = pd.DataFrame({
     'distance to park': [1200]
 })
 
-# 데이터 스케일링
+# Data scaling
 new_data_scaled = scaler.transform(new_data)
 
-# 예측 수행
+# perform predictions
 predicted_price = model.predict(new_data_scaled)
 print(f"Predicted Price for new data: {predicted_price[0]} 만원")

@@ -25,7 +25,7 @@ df1= pd.read_excel("D:/WORKSPACE/github/MYSELF24/Python/Final_project/Excel_data
 
 total_df = df1[df1['교육기관형태별(1)'].str.contains('관')].reset_index(drop=True)
 total_df.columns = [re.sub(r'\.\d+', '', str(col)) for col in total_df.columns]
-# . : 한개 임의의 문자 , \ : 문자자체를 의미, + : 앞의 무자 최소 한개 이상 존재 
+# . : One random character, \ : Means the character itself, + : At least one preceding blank character exists.
 total_df.rename(columns={'시도별': '교육기관형태별'}, inplace=True)
 #total_df = total_df.drop(columns=['Unnamed: 0'])
 
@@ -46,36 +46,36 @@ for sc_type in city_mv:
     df = df.drop(index=0)
     csv_file_path = f"D:/WORKSPACE/github/MYSELF24/Python//Final_project/csv_data/{sc_type}.csv"
     df.to_csv(csv_file_path)
-    # index=False, header=False 옵션
+    # index=False, header=False options
     csv_file_paths.append(csv_file_path)
 
 print(csv_file_paths)
 
 #%%
 
-# 비형식 기관
+# informal institutions
 df_informal = df1.iloc[:2]
 df_informal = df_informal.drop(columns=['Unnamed: 0'])
 df_informal.to_excel("D:/WORKSPACE/github/MYSELF24/Python/Final_project/Excel_data/informal_ins.xlsx", index=False)
-# 준형식 기관
+# semi-formal institution
 df_semi_formal = df1.iloc[[0, 2]]
 df_semi_formal =df_semi_formal.drop(columns=['Unnamed: 0'])
 df_semi_formal.to_excel("D:/WORKSPACE/github/MYSELF24/Python/Final_project/Excel_data/semiformal_ins.xlsx",index=False)
 #%%
-# 준형식
+# semi-formal
 semi = pd.read_excel("D:/WORKSPACE/github/MYSELF24/Python/Final_project/Excel_data/semiformal_ins.xlsx")
 #semi = semi.drop(columns=['Unnamed: 0'])
 semi.columns = [re.sub(r'\.\d+', '', str(col)) for col in semi.columns]
 semi.to_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/csv_data/semiformal_ins.csv",index= False)
 
-# 비형식
+# informal
 informal = pd.read_excel("D:/WORKSPACE/github/MYSELF24/Python/Final_project/Excel_data/informal_ins.xlsx")
 #informal = informal.drop(columns=['Unnamed: 0'])
 
 informal.columns = [re.sub(r'\.\d+', '', str(col)) for col in informal.columns]
 informal.to_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/csv_data/informal_ins.csv",index= False)
 #%%
-#충북충남세종
+# Chungbuk, Chungnam, Sejong
 
 import pandas as pd
 
@@ -90,7 +90,7 @@ for sc_type in city:
     df = df.drop(index=0)
     csv_file_path = f"D:/WORKSPACE/github/MYSELF24/Python//Final_project/csv_data/{sc_type}.csv"
     df.to_csv(csv_file_path)
-    # index=False, header=False 옵션
+    # index=False, header=False options
     csv_file_paths.append(csv_file_path)
 
 print(csv_file_paths)

@@ -6,11 +6,11 @@ Created on Tue May 28 10:20:32 2024
 """
 
 import sqlite3
-# sqlite 데이터베이스 연결하기---(*1)
+# Connecting to sqlite database---(*1)
 filepath = "test2.sqlite"
 conn = sqlite3.connect(filepath)
 
-# 테이블을 생성하고 데이터 넣기 ---(*2)
+# Create a table and insert data ---(*2)
 cur = conn.cursor()
 cur.execute("DROP TABLE IF EXISTS items")
 cur.execute('''CREATE TABLE items (
@@ -18,19 +18,19 @@ item_id INTEGER PRIMARY KEY,
 name TEXT,
 price INTEGER) ''')
 conn.commit()
-# 데이터 넣기  ---(*3)
-cur = conn.cursor() # cursor를 만들어주는 용도가 다르기 떄문에 따로 매번 실행해주어야함.
-# column 을 name,price 만을 선택. 
+# Enter data ---(*3)
+cur = conn.cursor() # Since the purpose of creating the cursor is different, it must be executed separately each time.
+# Select only name and price as columns.
 cur.execute(
     "INSERT INTO items (name,price) VALUES (?,?)",
     ("Orange", 5200))
 conn.commit()
 
-#여러 데이터 연속으로 넣기  ---(*4)
-# data sql 문을 활용한 데이터 가져오기 csv 로 가져와 
-# 학습 데이터 자동 수집(나이대 별 시나리오 작성된 DB 구축을 통해 모듈화) 
-# 시나리오 : 연령별 (20대, 30대, 40대, 50대, 60대)
-#- 가상인물
+# Inserting multiple data in succession ---(*4)
+# Import data using the data sql statement Import it as csv
+# Automatic collection of learning data (modularized by building a database with scenarios for each age group)
+# Scenario: By age (20s, 30s, 40s, 50s, 60s)
+# - Virtual character
 '''
 A조합 : 20 ~ 30대
 - 선호 인프라 : 교통, 여가
@@ -68,7 +68,7 @@ cur.executemany(
     data)
 conn.commit()
 
-# 4000~7000원 사이의 데이터 추출---(*5)
+# Extract data between 4,000 and 7,000 won---(*5)
 cur = conn.cursor()
 price_range = (4000, 7000)
 cur.execute(

@@ -16,7 +16,7 @@ seoul_best = numeric_df.quantile([0.25, 0.50, 0.75, 1.00])
 
 new_index = ['A', 'B', 'C', 'D']
 
-# 인덱스 값을 새로운 값으로 변경
+# Change the index value to a new value
 seoul_best.index.name = '순위'
 seoul_best.index = ['1', '2', '3', '4']
 
@@ -25,9 +25,9 @@ seoul_best.index = ['1', '2', '3', '4']
 numeric_df = df2.select_dtypes(include='number')
 seoul_worst = numeric_df.quantile([0.25, 0.50, 0.75, 1.00])
 
-#(['1순위','2순위', '3순위', '4순위'])
+# (['1st priority', '2nd priority', '3rd priority', '4th priority'])
 
-# 결과 출력
+# Result output
 print("각 열의 사분위수:")
 print(seoul_worst)
 '''
@@ -38,7 +38,7 @@ print(seoul_worst)
 0.75   656.0            918.0  ...  2300.0             380000000.0
 1.00  1400.0           1417.0  ...  2800.0             650000000.0
 '''
-# 결과 출력
+# Result output
 print("각 열의 사분위수:")
 print(seoul_best)
 
@@ -82,10 +82,10 @@ seoul_worst.to_excel('D:\WORKSPACE\github\MYSELF24\Python\MiniProject-May\seoulc
 #%%
 combined_df = seoul_worst.add(seoul_best, fill_value=0)
 
-# 각 열의 값을 2로 나누기
+# Divide the values ​​in each column by 2
 rank3 = combined_df / 2
 
-# 결과 출력
+# Result output
 print("3등급:")
 print(rank3)
 

@@ -9,25 +9,25 @@ import pandas as pd
 
 df = pd.read_excel('시군구별_인구이동.xlsx')
 
-# 결측치 확인
+# Check for missing values
 df.info()
 
 
 # %%
 
-# 데이터 탐색
+# Data Exploration
 df['행정구역(시군구)별'].unique()
 
-# \u3000 제거
+# \u3000 remove
 df['행정구역(시군구)별'] = df['행정구역(시군구)별'].str.replace('\u3000', '')
 df['행정구역(시군구)별'] = df['행정구역(시군구)별'].str.replace('  ', '')
 
-# 중복 행 제거
+# Remove duplicate rows
 df = df.drop_duplicates()
 
 df.info()
 # %%
-# 시군구 중복 지명 구분 처리
+# Processing of duplicate city/county/district nominations
 
 seoul_dstr = '강남구, 강동구, 강북구, 강서구, 관악구, 광진구, 구로구, 금천구, 노원구, 도봉구, 동대문구, 동작구, 마포구, 서대문구, 서초구, 성동구, 성북구, 송파구, 양천구, 영등포구, 용산구, 은평구, 종로구, 중구, 중랑구'.split(', ')
 incheon_dstr = '중구, 동구, 미추홀구, 연수구, 남동구, 부평구, 계양구, 서구, 강화군, 옹진군, 남구'.split(', ')
@@ -47,7 +47,7 @@ gyungbuk_cities = '포항시,경주시,김천시,안동시,구미시,영주시,�
 gyungnam_cities = '창원시,진주시,통영시,사천시,김해시,밀양시,거제시,양산시,의령군,함안군,창녕군,고성군,남해군,하동군,산청군,함양군,거창군,합천군'.split(',')
 jeju_cities = '제주시,서귀포시'.split(',')
 
-# 행정구역 순서 파악하기
+# Understanding the order of administrative districts
 cities_dict = {}
 cities = '서울특별시, 부산광역시, 인천광역시, 대구광역시, 대전광역시, 광주광역시, 울산광역시, 경기도, 충청북도, 충청남도, 전라남도, 경상북도, 경상남도, 강원특별자치도, 전북특별자치도, 제주특별자치도'.split(', ')
 for city in cities:
@@ -55,14 +55,14 @@ for city in cities:
     cities_dict[city] = index
     print(city, index)
     
-# 순서대로 시도 목록 정렬
+# Sort list of attempts in order
 cities_dict = dict(sorted(cities_dict.items(), key=lambda x: x[1]))
 # cities_tup = sorted(cities_dict.items(), key=lambda x: x[1])
 
-# 시도명-시군구list 형태로 딕셔너리 생성
+# Create a dictionary in the form of city/city/city/county/gu list.
 cities_dstr = dict(zip(list(cities_dict.keys()),[seoul_dstr,busan_dstr,daegu_dstr,incheon_dstr,gwangju_dstr,daejeon_dstr,ulsan_dstr,gyunggi_cities, gangwon_cities,chungbuk_cities,chungnam_cities,jeonbuk_cities,jeonnam_cities,gyungbuk_cities,gyungnam_cities,jeju_cities]))
 
-# 시군구 앞에 시도명을 접두사로 추가
+# Add the name of the city or city as a prefix before the city, county or district.
 i = 0
 index = list(cities_dict.values())
 for city in cities_dstr:
@@ -74,7 +74,7 @@ for city in cities_dstr:
     df.loc[:index[i],'행정구역(시군구)별'] = df['행정구역(시군구)별'].apply(lambda x: f'{city} {x}' if x in cities_dstr[city] else x)
     
 # %%
-# 인천광역시 남구(현 미추홀구) 데이터 결합
+# Combine data from Nam-gu, Incheon Metropolitan City (currently Michuhol-gu)
 df_michuholgu = df[df['행정구역(시군구)별'] =='인천광역시 미추홀구'].replace('-', 0)
 df_namgu = df[df['행정구역(시군구)별'] =='인천광역시 남구'].set_index(df_michuholgu.index)
 df_mic = df_michuholgu + df_namgu
@@ -83,7 +83,7 @@ df2 = df.drop(df[df['행정구역(시군구)별'] =='인천광역시 남구'].in
 
 df2.update(df_mic.iloc[:,1:], overwrite=True)
 
-# 경상북도 군위군(현 대구광역시) 데이터 결합
+# Combine data from Gunwi-gun, Gyeongsangbuk-do (currently Daegu Metropolitan City)
 gunwi_daegu = df2[df2['행정구역(시군구)별'] =='대구광역시 군위군'].replace('-', 0)
 gunwi_gyungbuk = df2[df2['행정구역(시군구)별'] =='군위군'].set_index(gunwi_daegu.index)
 df_gun = gunwi_daegu + gunwi_gyungbuk
@@ -91,38 +91,38 @@ df3 = df2.drop(df2[df2['행정구역(시군구)별'] =='군위군'].index)
 
 df3.update(df_gun.iloc[:,1:], overwrite=True)
 
-# 결측치 확인
+# Check for missing values
 df3.info()
 
-# 사라진 시군구 행 제거
+# Remove missing city, county and district rows
 
 df4 = df3.set_index('행정구역(시군구)별')
 df4 = df4.loc[~(df4.iloc[:, 1:] == 0).all(axis=1)]
 
 # %%
-# 전입, 전출 따로 분리하여 각각 데이터프레임으로 만들기
+# Separate move-in and move-out and create data frames for each
 
-# 전입 데이터프레임
+# Transfer data frame
 df_in = df4.filter(regex=r'^\d+$')
 
-# 전출 데이터프레임
+# Transfer data frame
 df_out = df4.filter(regex=r'^\d+\.\d+$')
     
-# 서브 헤더행 제거
+# Remove subheader row
 df_in = df_in.iloc[1:, :]
 df_out = df_out.iloc[1:, :]
 
-# 전출 데이터 전입 데이터와 똑같이 열 이름 바꿔주기
+# Change the column name to the same as the transfer data transfer data
 df_out.columns = df_in.columns
 # %%
 import numpy as np
-# log(전입 / 전출)
+# log(moving in/moving out)
 df_mov_var = df_in / df_out
 
 log_df_mov = np.log(df_mov_var.astype(float))
 
 # %%
-# 엑셀파일 저장
+# Save Excel file
 log_df_mov.to_excel("전입전출_log처리_2015-2023.xlsx")
 # csv
 log_df_mov.to_csv("전입전출_log처리_2015-2023.csv")

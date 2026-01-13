@@ -16,11 +16,11 @@ import joblib
 
 gbm_pickle = joblib.load('lgb.pkl')
 
-# 제목
+# title
 st.title('지방소멸등급 예측 서비스(Sample)')
 st.header('Local Extinction Prediction Project')
 
-# Add a placeholder 진행 상황 바
+# Add a placeholder progress bar
 latest_iteration = st.empty()
 bar = st.progress(0)
 for i in range(100):
@@ -29,10 +29,10 @@ for i in range(100):
     bar.progress(i + 1)
     time.sleep(0.01)
         
-# 변수는 총 5개
+# There are a total of 5 variables
 
 st.write("""
-## 사용 변수들
+# # Variables used
 1. 고위험음주율
 2. 비만율
 3. EQ.5D
@@ -40,7 +40,7 @@ st.write("""
 5. 건강보험적용인구
 """)
 
-# 지역 변수를 제외한 나머지 변수 설정하는 sidebar
+# A sidebar that sets other variables except local variables.
 drink = st.slider("고위험음주율", 1, 50)
 
 fat = st.slider("비만율", 1, 60)
@@ -49,7 +49,7 @@ self_health = st.slider("주관적건강수준인지율", 20, 100)
 insurance = st.slider("건강보험적용인구", 1, 2000000)
 
 
-# scaling되기 전의 데이터
+# Data before scaling
 realData = [[drink, fat, eq5d, self_health, insurance]]
 
 res = ''

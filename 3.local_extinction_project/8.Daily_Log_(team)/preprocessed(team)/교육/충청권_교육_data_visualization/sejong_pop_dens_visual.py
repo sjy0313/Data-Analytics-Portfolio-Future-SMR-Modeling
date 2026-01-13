@@ -22,7 +22,7 @@ def reg():
         
         fm.fontManager.addfont(fpath)
 #%%
-# 폰트설정
+# Font settings
 
 #font_path = "c:/Windows/Fonts/malgun.ttf"
 #font_name = font_manager.FontProperties(fname=font_path).get_name()
@@ -30,13 +30,13 @@ def reg():
 plt.rc('font', family='NanumBarunGothic')
 
 #%%
-# 세종교육인프라
+# Sejong Education Infrastructure
 file_path = f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/sejong_data/result_sejong.csv"
 edu1 = pd.read_csv(file_path, header=None)
 edu1 = edu1.iloc[:, 1]
 edu1 = edu1.rename('Number of Education_Infrstructure')
 #%%
-# 세종인구밀도
+# Sejong population density
 df_sejong  = pd.read_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/sejong_data/sejong_dens.csv")
 df_sejong = df_sejong.to_frame()
 df_sejong.columns = ['Density(Population/Area)']

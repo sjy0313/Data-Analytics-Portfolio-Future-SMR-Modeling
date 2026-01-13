@@ -5,7 +5,7 @@ Created on Wed Jul 10 16:42:45 2024
 @author: Shin
 """
 #%%
-# 충북
+# Chungbuk
 import pandas as pd
 city = ['uni', 'junior_sc', 'middle_sc', 'high_sc'] 
 
@@ -22,13 +22,13 @@ for sc_type in city:
    
     csv_file_paths.append(df)
 #%%
-#충북
+# Chungbuk
 edu = pd.read_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/csv_data/chungbuk_edu.csv")
 edu = edu.drop(index=0 & 1)
 edu = edu.transpose()
 edu = edu.iloc[1:]
 edu.reset_index()
-#edu.columns = ['개수']
+# edu.columns = ['Count']
 
 edu.to_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/chungbuk_data/chungbuk.csv",index=False, header=False)
 
@@ -39,13 +39,13 @@ cit = ['uni', 'junior_sc', 'middle_sc', 'high_sc','chungbuk']
 combined_df = pd.DataFrame()
 
 for file in cit :
-    df = pd.read_csv(f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/chungbuk_data/{file}.csv", header=None)  # 파일을 읽어오기
+    df = pd.read_csv(f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/chungbuk_data/{file}.csv", header=None)  # Read file
     if combined_df.empty:
         combined_df = df
     else:
         combined_df += df
 
-# 결과를 CSV 파일로 저장
+# Save results as CSV file
 combined_df.to_csv('result_chungbuk.csv', header=False)
 
 
@@ -61,7 +61,7 @@ combined_df.to_csv('result_chungbuk.csv', header=False)
 
     
 #%%
-# 세종
+# Sejong
 city = ['uni', 'junior_sc', 'middle_sc', 'high_sc'] 
 
 csv_file_paths = []
@@ -77,7 +77,7 @@ for sc_type in city:
     
     csv_file_paths.append(df)
 #%%    
-# 세종
+# Sejong
 edu = pd.read_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/csv_data/sejong_edu.csv")
 edu = edu.drop(index=0 & 1)
 edu = edu.transpose()
@@ -90,17 +90,17 @@ combined_df = pd.DataFrame()
 cit = ['uni', 'junior_sc', 'middle_sc', 'high_sc', 'sejong']    
 
 for file in cit :
-    df = pd.read_csv(f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/sejong_data/{file}.csv", header=None)  # 파일을 읽어오기
+    df = pd.read_csv(f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/sejong_data/{file}.csv", header=None)  # Read file
     if combined_df.empty:
         combined_df = df
     else:
         combined_df += df
 
-# 결과를 CSV 파일로 저장
+# Save results as CSV file
 combined_df.to_csv('result_sejong.csv',header=False)
 
 #%%
-# 충남
+# Chungnam
 city = ['uni', 'junior_sc', 'middle_sc', 'high_sc'] 
 
 csv_file_paths = []
@@ -117,7 +117,7 @@ for sc_type in city:
     csv_file_paths.append(df)
     
 #%%   
-# 충남
+# Chungnam
 edu = pd.read_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/csv_data/chungnam_edu.csv")
 edu = edu.drop(index=0 & 1)
 edu = edu.transpose()
@@ -131,11 +131,11 @@ combined_df = pd.DataFrame()
 cit = ['uni', 'junior_sc', 'middle_sc', 'high_sc', 'chungnam']    
 
 for file in cit :
-    df = pd.read_csv(f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/chungnam_data/{file}.csv", header=None)  # 파일을 읽어오기
+    df = pd.read_csv(f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/chungnam_data/{file}.csv", header=None)  # Read file
     if combined_df.empty:
         combined_df = df
     else:
         combined_df += df
 
-# 결과를 CSV 파일로 저장
+# Save results as CSV file
 combined_df.to_csv('result_chungnam.csv', header=False)

@@ -4,23 +4,23 @@ Created on Mon Apr  8 09:25:46 2024
 
 @author: Shin
 """
-# 컴퓨터 화면 크기 파악.(아래 코드는 현재 학원컴퓨터 사이즈를 적용한 것임.)
+# Determine the computer screen size. (The code below applies the current academy computer size.)
 from selenium import webdriver
 driver = webdriver.Chrome()
 driver.maximize_window()
 print("최대화된 창의 크기 및 위치:", driver.get_window_position(), driver.get_window_size())
 driver.quit()
-# 최대화된 창의 크기 및 위치: {'x': -8, 'y': -8} {'width': 1936, 'height': 1056}
-# {왼쪽 상단 모퉁이의 x좌표, y: 오른쪽 상단 모통이의 y좌표} {창의 너비와 높이}
+# Size and position of maximized window: {'x': -8, 'y': -8} {'width': 1936, 'height': 1056}
+# {x-coordinate of the upper-left corner, y: y-coordinate of the upper-right corner} {width and height of window}
 window_size = {'width': 1936, 'height': 1056}
 half_width = window_size['width'] // 2
 
-# 절반크기로 브라우저 크기 축소시켜서 web_scroll 구현
+# Implement web_scroll by reducing the browser size to half the size
 print("절반 크기:", half_width)
-# 절반 크기: 968 
+# Half size: 968
 
 #%%
-# web-scrapping에 활용할 함수생성
+# Create a function to be used for web-scraping
 
 import pandas as pd
 import time
@@ -30,13 +30,13 @@ from bs4 import BeautifulSoup
 def web_scroll(url):
     
     options = Options()
-    options.headless = False  # GUI 웹 구현 
-    options.add_argument('--window-size=968,1056') # 절반크기 화면 
+    options.headless = False  # GUI web implementation
+    options.add_argument('--window-size=968,1056') # half size screen
     driver = webdriver.Chrome(options=options)
     driver.get(url) 
-    time.sleep(3) # 웹 로드
-    step = 0.9 #웹 페이지의 90%만큼 이동
-    scroll = 8 # 총 8번이 스크롤 될 동안 실행
+    time.sleep(3) # web load
+    step = 0.9 # Move as much as 90% of a web page
+    scroll = 8 # Executes while scrolling a total of 8 times
     screen_size = driver.execute_script("return window.screen.height;") # 1056pixel
     while scroll> 0:
         driver.execute_script("window.scrollTo(0,{screen_height}*{step})".format(screen_height=screen_size, step=step))
@@ -44,14 +44,14 @@ def web_scroll(url):
         step+= 0.9
         time.sleep(3) 
         scroll -= 1
-    html_text = driver.page_source #웹페이지의 소스코드(html) python에 가져오기
+    html_text = driver.page_source # Import web page source code (html) into python
     driver.close() 
-    soup = BeautifulSoup(html_text,'lxml') # lxml 파서는 큰 html문서처리에 용이(반면에 html_parser는 간단한 문서처리에 활용)
+    soup = BeautifulSoup(html_text,'lxml') # The lxml parser is easy to process large HTML documents (on the other hand, html_parser is used for simple document processing).
     return soup
 
 
 #%%
-# 책 품목에서 제목/작가/한줄평 추출
+# Extract title/author/one-line review from book items
 def extract_product_data(soup):
   
     product_data = []
@@ -63,13 +63,13 @@ def extract_product_data(soup):
         
         if name_elem and author_elem:
             product_data.append({
-                'Product': name_elem.text.strip(), # 책의 양쪽 공백제거(데이터의 일관성유지 및 처리과정에서 발생할 수 있는 오류 미연에 방지)
+                'Product': name_elem.text.strip(), # Remove spaces on both sides of the book (maintain data consistency and prevent errors that may occur during processing)
                 'Author': author_elem.text.strip(),
                 'shortre': shortre_elem.text.strip()
             })
     
     return pd.DataFrame(product_data)
-# 중간점검 
+# Midterm inspection
 '''
 main_url = 'https://product.kyobobook.co.kr/bestseller/total?period=004#?page=1&per=50&period=004&ymw=&bsslBksClstCode=A'
 main_soup = web_scroll(main_url)
@@ -78,7 +78,7 @@ df = pd.concat([df_main], ignore_index=True)
 df.to_csv('test_books.csv', index=False)
 '''
 #%%
-# 책의 장르 추출(p137 혼자공부하는 데이터 분석)
+# Extracting the genre of a book (p137 data analysis for solo study)
 
 import requests
 import pandas as pd
@@ -122,10 +122,10 @@ def genre_features(soup):
 
 
  if main_links is not None:
-    # 'A' 메인 링크가 존재하는 경우
+    # If 'A' main link exists
     base_url = "https://product.kyobobook.co.kr/bestseller/total?period=004#?page=1&per=50&period=004&ymw=&bsslBksClstCode="
     genre_data.append({"Links": base_url + "A"})
 else:
-    # 'A' 메인 링크가 없는 경우
+    # If there is no 'A' main link
     genre_data.append({"Links": "NA"})
 

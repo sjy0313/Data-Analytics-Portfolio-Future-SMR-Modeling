@@ -8,17 +8,17 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager, rc
 import pandas as pd
 import seaborn as sns
-# 폰트설정
+# Font settings
 font_path = "c:/Windows/Fonts/malgun.ttf"
 font_name = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font_name)
 #%%
-# 인구밀도
+# population density
 file_path = f"D:/WORKSPACE/github/MYSELF24/Python/Final_project/Raw_data/인구밀도.xlsx"
 df = pd.read_excel(file_path,header=1)
 #%%
-# 세종
-df_sejong = df.iloc[8] # 세로버전 transpose()필요없음
+# Sejong
+df_sejong = df.iloc[8] # No need for transpose() in vertical version
 df_sejong =df_sejong[1:]
 df_sejong = df_sejong .to_frame()
 df_sejong.columns = ['인구밀도(세종인구/면적)']
@@ -26,8 +26,8 @@ df_sejong = df_sejong.to_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/
 df_sejong  = pd.read_csv("D:/WORKSPACE/github/MYSELF24/Python/Final_project/sejong_data/sejong_dens.csv")
 df_sejong = df_sejong.round(2)
 #%%
-# 충북
-df_chungbuk = df.iloc[11] # 세로버전 transpose()필요없음
+# Chungbuk
+df_chungbuk = df.iloc[11] # No need for transpose() in vertical version
 df_chungbuk =df_chungbuk[1:]
 df_chungbuk = df_chungbuk.to_frame()
 df_chungbuk.columns = ['인구밀도(충북인구/면적)']
@@ -38,8 +38,8 @@ df_chungbuk = df_chungbuk.round(2)
 
 
 #%%
-# 충남
-df_chungnam = df.iloc[12] # 세로버전 transpose()필요없음
+# Chungnam
+df_chungnam = df.iloc[12] # No need for transpose() in vertical version
 df_chungnam = df_chungnam[1:]
 df_chungnam = df_chungnam.to_frame()
 df_chungnam.columns = ['인구밀도(충남인구/면적)']
@@ -88,7 +88,7 @@ from matplotlib import font_manager, rc
 import pandas as pd
 import seaborn as sns
 #%%
-# 폰트설정
+# Font settings
 font_path = "c:/Windows/Fonts/malgun.ttf"
 font_name = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font_name)

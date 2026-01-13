@@ -13,7 +13,7 @@ df = pd.read_excel(file_path)
 df_p = pd.read_csv(file_path_1)
     
 #%%
-#폰트 설정
+# Font settings
 from matplotlib import font_manager, rc
 font_path = "c:/Windows/Fonts/malgun.ttf"
 font_name = font_manager.FontProperties(fname=font_path).get_name()
@@ -27,7 +27,7 @@ rc('font', family=font_name)
 '''
 
 #%%
-# aspect = 1보다 크게 하면 좌우 사이즈 증가 # height = 2.5이상 -> 높이 증가
+# If aspect = larger than 1, the left and right size increases # height = 2.5 or higher -> height increases
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
@@ -47,10 +47,10 @@ plt.show()
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# 데이터 로드
+# data load
 corr = df.iloc[:,1:].corr()
 
-# 히트맵 시각화
+# Heatmap visualization
 plt.figure(figsize=(10, 8))
 sns.heatmap(corr, annot=True, cmap='coolwarm', fmt='.2f')
 plt.title('Correlation Heatmap')
@@ -59,10 +59,10 @@ plt.show()
 
 import plotly.express as px
 
-# 데이터 로드
+# data load
 corr = df.iloc[:,1:].corr()
 
-# 히트맵 시각화
+# Heatmap visualization
 fig = px.imshow(corr, text_auto=True, color_continuous_scale='RdBu_r', title='Correlation Heatmap')
 fig.show()
 
@@ -78,21 +78,21 @@ features = ['교원_1인당_학생수_유치원', '교원_1인당_학생수_초�
 X = df[features]
 y = df_p['소멸위험등급']
 #%%
-# 스케일링
+# scaling
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-# 데이터프레임으로 변환
+# Convert to data frame
 X_scaled_df = pd.DataFrame(X_scaled, columns=['scaled_' + feature for feature in features])
 
-# 상수항 추가
+# Add constant term
 X_scaled_df = sm.add_constant(X_scaled_df)
 
-# 모델 생성 및 피팅
+# Model creation and fitting
 model = sm.OLS(y, X_scaled_df)
 results = model.fit()
 
-# 결과 출력
+# Result output
 print(results.summary())
 '''
  OLS Regression Results 회귀분석결과                              
@@ -136,7 +136,7 @@ Kurtosis:                       2.060   Cond. No.[다중공선성 30이하 -> �
 
 
 #%%
-#df['intercept'] = 1 #(절편) 
+# df['intercept'] = 1 #(절편)
 model = sm.OLS(df_p['소멸위험등급'], df[['교원_1인당_학생수_유치원', '교원_1인당_학생수_초등학교', '교원_1인당_학생수_중학교', '교원_1인당_학생수_고등학교',
                             '유치원_학급당 학생 수 (명)', '초등학교_학급당 학생 수 (명)', '중학교_학급당 학생 수 (명)', '고등학교_학급당 학생 수 (명)',
                             '학교교과 교습학원 (개)', '평생직업 교육학원 (개)', '사설학원당 학생수 (명)', '유치원생 수', '초등학생 수']])
@@ -199,7 +199,7 @@ print(vif)
 #%%
 df['예측 값'] = results.predict()
 df['잔차'] = df['실제 값'] - df['예측 값']
-# 잔차 시각화 : 
+# Residual visualization:
 import matplotlib.pyplot as plt
 
 plt.scatter(df['예측 값'], df['잔차'])
@@ -209,8 +209,8 @@ plt.ylabel('잔차')
 plt.title('잔차 플롯')
 plt.show()
 #%%
-#정규 Q-Q 플롯 (Quantile-Quantile Plot):
-#잔차가 정규분포를 따른다면 Q-Q 플롯에서 데이터 점들이 직선 위에 위치해야 합
+# Normal Q-Q Plot (Quantile-Quantile Plot):
+# If the residuals are normally distributed, the data points on the Q-Q plot should lie on a straight line.
 import scipy.stats as stats
 import numpy as np
 
@@ -218,15 +218,15 @@ stats.probplot(df['잔차'], dist="norm", plot=plt)
 plt.title('정규 Q-Q 플롯')
 plt.show()
 
-# 잔차의 분포를 확인하여 정규성을 검토
+# Check normality by checking the distribution of residuals
 plt.hist(df['잔차'], bins=30, edgecolor='k')
 plt.xlabel('잔차')
 plt.ylabel('빈도')
 plt.title('잔차의 히스토그램')
 plt.show()
 
-#자기상관 (Autocorrelation):
-#잔차가 시간 순서나 다른 독립 변수에 따라 자기상관을 갖지 않아야 합니다. Durbin-Watson 통계량을 사용하여 자기상관을 평가할 수 있습니다.
+# Autocorrelation:
+# The residuals should not be autocorrelated with time order or other independent variables. You can evaluate autocorrelation using the Durbin-Watson statistic.
 from statsmodels.stats.stattools import durbin_watson
 dw = durbin_watson(df['잔차'])
 print(f'Durbin-Watson 통계량: {dw}')

@@ -8,7 +8,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import statsmodels.api as sm
-# 소멸등급
+# extinction level
 file_path = 'C:/Users/Shin/Documents/Final_Project/Data/교육_전국/교육_연도별_전국통합/소멸등급(2015~2021).csv'
 parameter_integrate_p = pd.read_csv(file_path)
 
@@ -27,13 +27,13 @@ def merge_dataframes(file_paths):
         parameter_integrate = pd.read_excel(path)
         dataframes.append(parameter_integrate.iloc[:, 1:])  
 
-    result = pd.concat(dataframes, axis=1)  # 열 방향으로 병합
+    result = pd.concat(dataframes, axis=1)  # Merge column-wise
     return result
 
 parameter_integrate = merge_dataframes(file_paths)
 print(parameter_integrate)
 
-# 소멸위험등급과 통합변수들의 관계 분석
+# Analysis of the relationship between extinction risk level and integrated variables
 model = sm.OLS(parameter_integrate_p['소멸위험등급'], parameter_integrate[:] )
 results = model.fit()
 print(results.summary())  
@@ -156,13 +156,13 @@ print(vif)
 
 
 #%% 
-# 다중회귀 분석 결과
-# coef(회귀계수)를 확인해본 결과 회귀계수가 양수이면, 종속변수인 지방소멸위험등급이 낮아진다(등급상승1->4) 즉,
-# 지방소멸위험을 방지해주는 요소로 판단이 
-#  P>|t| : P-값이 0.05 이하인 경우 해당 독립 변수가 종속 변수에 유의미한 영향을 미친다고 판단
+# Multiple regression analysis results
+# As a result of checking the coef (regression coefficient), if the regression coefficient is positive, the dependent variable, the local extinction risk grade, is lowered (grade increase 1->4), that is,
+# It is judged to be a factor that prevents the risk of fat loss.
+# P>|t| : If the P-value is 0.05 or less, it is judged that the independent variable has a significant effect on the dependent variable.
 
 
-# coef 값이 양수이면서 p값이 0.05 이하인 변수 필터링
+# Filter variables with a positive coef value and a p value of 0.05 or less.
 
 '''
                                       Variable  Coefficient       P-value
@@ -247,34 +247,34 @@ print(vif)
 
 
 #%%
-#자기상관 (Autocorrelation):
-#잔차가 시간 순서나 다른 독립 변수에 따라 자기상관을 갖지 않아야 합니다. Durbin-Watson 통계량을 사용하여 자기상관을 평가할 수 있습니다.
+# Autocorrelation:
+# The residuals should not be autocorrelated with time order or other independent variables. You can evaluate autocorrelation using the Durbin-Watson statistic.
 #from statsmodels.stats.stattools import durbin_watson
-#dw = durbin_watson(parameter_integrate['잔차'])
+# dw = durbin_watson(parameter_integrate['잔차'])
 print(f'Durbin-Watson 통계량: {dw}')
 
 
 
 #%%
 '''
-#잔차 분석을 통해 모델의 적합성을 평가하고, 개선할 수 있는 방법을 모색함으로써 더 나은 예측 모델을 구축할 수 있습니다.
-#잔차는 모델의 예측값과 실제 관측값 간의 차이로 정의
-# 모집단이 아닌 추출된 일부 표본으로 이론적인 분포와의 일치를 평가하는 것이 일반적
-#폰트 설정
+# Through residual analysis, you can build a better prediction model by assessing the suitability of the model and finding ways to improve it.
+# Residuals are defined as the difference between the model's predicted values ​​and the actual observed values.
+# It is common to evaluate agreement with the theoretical distribution with a selected sample rather than the population.
+# Font settings
 from matplotlib import font_manager, rc
 import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import numpy as np
 
-# 한글 폰트 설정
+# Korean font settings
 font_path = "c:/Windows/Fonts/malgun.ttf"
 font_name = font_manager.FontProperties(fname=font_path).get_name()
 rc('font', family=font_name)
 
-# 잔차 데이터
+# residual data
 residuals = best_results.resid
 
-# Q-Q 플롯(Quantile-Quantile Plot)
+# Q-Q (Quantile-Quantile Plot)
 fig = plt.figure(figsize=(10, 6))
 ax = fig.add_subplot(111)
 sm.qqplot(residuals, line='s', ax=ax)
@@ -284,19 +284,19 @@ plt.xlim(-3, 3)
 plt.ylim(-3, 3)
 
 plt.title('실제값과 오차비교(Q-Q Plot)')
-plt.xlabel('이론적 분위수')  # x축 레이블
-plt.ylabel('실제 데이터 분위수')  # y축 레이블
+plt.xlabel('이론적 분위수')  # x-axis labels
+plt.ylabel('실제 데이터 분위수')  # y-axis labels
 
-# 플롯 저장
+# Save plot
 plt.savefig('C:/Users/Shin/Documents/Final_Project/Photo/qqplot결과.png')
 
-# 플롯 화면에 표시
+# Show on plot screen
 plt.show()
 '''
 
 #%%
-# 사피로 검정
-# 독립변수에 log변환 적용 전 사피로 검정
+# sapiro black
+# Shapiro test before applying log transformation to independent variables
 from scipy.stats import shapiro
 import matplotlib.pyplot as plt
 import numpy as np
@@ -304,12 +304,12 @@ import scipy.stats as stats
 
 residuals = best_results.resid
 
-# Shapiro-Wilk 검정
+# Shapiro-Wilk test
 shapiro_test = shapiro(residuals)
 print(f"Shapiro-Wilk Test Statistic: {shapiro_test.statistic}")
 print(f"p-value: {shapiro_test.pvalue}")
 
-# 잔차의 히스토그램과 정규분포 곡선
+# Histogram and normal distribution curve of residuals
 plt.hist(residuals, bins=30, density=True, alpha=0.6, color='g')
 
 mu, std = np.mean(residuals), np.std(residuals)
@@ -324,37 +324,37 @@ plt.ylabel('밀도')
 plt.savefig('C:/Users/Shin/Documents/Final_Project/Photo/잔차결과(로그변환이전).png')
 plt.show()
 
-# 정규성 검정(Normality Test)
+# Normality Test
 #Shapiro-Wilk test statistic: 0.9684673915431092
-#데이터의 수가 굉장히 적다면 정규성 검정을 잘 통과하므로 결과를 맹신해서는 안 된다.
-#검정통계량이 1에 가까울수록 잔차의 분포가 정규분포에 가까운 것으로 해석되지만
+# If the number of data is very small, the normality test is easily passed, so you should not blindly trust the results.
+# The closer the test statistic is to 1, the closer the residual distribution is to a normal distribution.
 #p-value: 3.105358961597644e-18
-# P-값이 0.05보다는 매우 작은 값을 나타냄 즉 잔차가 정규 분포를 따르지 않는다는 것을 의미 
-# 변수가 많을 경우 과적합되거나 다중공선성이 발생할 수 있는데 
+# The P-value is much smaller than 0.05, meaning that the residuals do not follow a normal distribution.
+# If there are many variables, overfitting or multicollinearity may occur.
 '''
-# 지방소멸에 영향을 주는 변수
+# Variables that affect fat loss
 Shapiro-Wilk test statistic: 0.9684673915431092
 p-value: 3.105358961597644e-18
-# 모든변수
+# All variables
 Shapiro-Wilk test statistic: 0.9919487552757812
 p-value: 1.0836112418254231e-07'''
 #%%
 
-# Shapiro-Wilk 테스트 결과 출력
+# Shapiro-Wilk test result output
 print(f"Shapiro-Wilk test statistic: {shapiro_test.statistic}")
 print(f"p-value: {shapiro_test.pvalue}")
 
 
 
 #%%
-# Kolmogorov-Smirnov 검정 로그변환이전
+# Kolmogorov-Smirnov test before log transformation
 from scipy import stats
 import numpy as np
 
-# 잔차 데이터
+# residual data
 residuals = best_results.resid
 
-# Kolmogorov-Smirnov 검정
+# Kolmogorov-Smirnov test
 mu, sigma = np.mean(residuals), np.std(residuals)
 statistic, p_value = stats.kstest(residuals, 'norm', args=(mu, sigma))
 
@@ -373,11 +373,11 @@ import matplotlib.pyplot as plt
 import scipy.stats as stats
 from scipy.stats import shapiro
 
-# 데이터 준비 (예시 데이터프레임 parameter_integrate 사용)
+# Data preparation (using example dataframe parameter_integrate)
 # parameter_integrate = pd.read_csv('your_data.csv')
 
-# 독립 변수에 로그 변환 적용
-parameter_integrate['log_교원_1인당_학생수_중학교'] = np.log(parameter_integrate['교원_1인당_학생수_중학교'] + 1)  # +1은 0 값 방지
+# Apply log transformation to independent variables
+parameter_integrate['log_교원_1인당_학생수_중학교'] = np.log(parameter_integrate['교원_1인당_학생수_중학교'] + 1)  # +1 prevents 0 values
 parameter_integrate['log_교원_1인당_학생수_고등학교'] = np.log(parameter_integrate['교원_1인당_학생수_고등학교'] + 1)
 parameter_integrate['log_유치원_학급당 학생 수 (명)'] = np.log(parameter_integrate['유치원_학급당 학생 수 (명)'] + 1)
 parameter_integrate['log_평생직업 교육학원 (개)'] = np.log(parameter_integrate['평생직업 교육학원 (개)'] + 1)
@@ -390,20 +390,20 @@ parameter_integrate['log_주민등록인구'] = np.log(parameter_integrate['주�
 parameter_integrate['log_하수도보급률'] = np.log(parameter_integrate['하수도보급률'] + 1)
 
 parameter_integrate = parameter_integrate.fillna(0)
-# 독립 변수와 상수항 준비
+# Prepare independent variables and constant terms
 X = parameter_integrate[['log_교원_1인당_학생수_중학교', 'log_교원_1인당_학생수_고등학교', 
        'log_유치원_학급당 학생 수 (명)', 'log_평생직업 교육학원 (개)', 
        'log_한방병원', 'log_총병상수 (개)','남녀성비', '주관적건강수준인지율', '인구증가율', '주민등록인구', '하수도보급률']]
-X = sm.add_constant(X)  # 상수항 추가
+X = sm.add_constant(X)  # Add constant term
 
-# 종속 변수
+# dependent variable
 y = parameter_integrate_p['소멸위험등급']
 
-# OLS 모델 적합
+# OLS model fit
 model = sm.OLS(y, X)
 log_results = model.fit()
 
-# 결과 출력
+# Result output
 print(log_results.summary())
 '''
 OLS Regression Results                            
@@ -440,17 +440,17 @@ Kurtosis:                       2.005   Cond. No.                     8.28e+06
 ==============================================================================
 '''
 #%%
-# 잔차 분석
+# Residual analysis
 residuals = log_results.resid
-# Shapiro-Wilk 검정
+# Shapiro-Wilk test
 shapiro_test = shapiro(residuals)
 print(f"Shapiro-Wilk Test Statistic: {shapiro_test.statistic}")
 print(f"p-value: {shapiro_test.pvalue}")
 
-# 잔차의 히스토그램과 정규분포 곡선
+# Histogram and normal distribution curve of residuals
 plt.hist(residuals, bins=30, density=True, alpha=0.6, color='g')
 
-# 정규분포 곡선 그리기
+# Drawing a normal distribution curve
 mu, std = np.mean(residuals), np.std(residuals)
 xmin, xmax = plt.xlim()
 x = np.linspace(xmin, xmax, 100)
@@ -461,10 +461,10 @@ plt.title('예측값과 실제값 차이 히스토그램 (로그 변환 이후)'
 plt.xlabel('잔차')
 plt.ylabel('밀도')
 
-# 그래프 저장
+# save graph
 plt.savefig('C:/Users/Shin/Documents/Final_Project/Photo/잔차결과(로그변환이후).png')
 
-# 그래프 화면에 표시
+# Displayed on graph screen
 plt.show()
 
 #%%
@@ -473,18 +473,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
 
-# 잔차 데이터
+# residual data
 residuals = best_results.resid
 
-# Shapiro-Wilk 검정
+# Shapiro-Wilk test
 shapiro_test = shapiro(residuals)
 print(f"Shapiro-Wilk Test Statistic: {shapiro_test.statistic}")
 print(f"p-value: {shapiro_test.pvalue}")
 
-# 잔차의 히스토그램과 정규분포 곡선
+# Histogram and normal distribution curve of residuals
 plt.hist(residuals, bins=30, density=True, alpha=0.6, color='g')
 
-# 정규분포 곡선 그리기
+# Drawing a normal distribution curve
 mu, std = np.mean(residuals), np.std(residuals)
 xmin, xmax = plt.xlim()
 x = np.linspace(xmin, xmax, 100)
@@ -495,21 +495,21 @@ plt.title('예측값과 실제값 차이 히스토그램 (로그 변환 이전)'
 plt.xlabel('잔차')
 plt.ylabel('밀도')
 
-# 그래프 저장
+# save graph
 plt.savefig('C:/Users/Shin/Documents/Final_Project/Photo/잔차결과(로그변환이전).png')
 
-# 그래프 화면에 표시
+# Displayed on graph screen
 plt.show()
 
 #%%
-# Kolmogorov-Smirnov 검정 로그변환이후 
+# Kolmogorov-Smirnov test after log transformation
 from scipy import stats
 import numpy as np
 
-# 잔차 데이터
+# residual data
 residuals = log_results.resid
 
-# Kolmogorov-Smirnov 검정
+# Kolmogorov-Smirnov test
 mu, sigma = np.mean(residuals), np.std(residuals)
 statistic, p_value = stats.kstest(residuals, 'norm', args=(mu, sigma))
 
@@ -518,30 +518,30 @@ print(f'P-value: {p_value}')
 #K-S Statistic: 0.05975288134346379
 #P-value: 2.037984247307559e-05
 #%%
-# 결론 : 
-#로그 변환 이후 K-S 통계량이 감소하고 p-value가 증가한 것을 볼 때, 로그 변환이 잔차의 정규성을 개선하는 데 어느 정도 기여했다고 볼 수 있습니다.
-#그러나 두 경우 모두 p-value가 0.05보다 훨씬 낮아, 잔차가 여전히 정규분포를 따르지 않는다는 결론을 내릴 수 있습니다. 
-#이는 추가적인 변환이나 다른 방식의 모델링이 필요할 수 있음을 시사
+# conclusion :
+# Considering that the K-S statistic decreased and the p-value increased after log transformation, it can be said that log transformation contributed to some extent to improving the normality of the residuals.
+# However, in both cases the p-value is much lower than 0.05, allowing us to conclude that the residuals are still not normally distributed.
+# This suggests that additional transformations or other methods of modeling may be needed.
 #%%
 
 import pandas as pd
 import statsmodels.api as sm
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler
 
-# 데이터 로드 (예시 데이터 사용)
-# parameter_integrate_p: 종속 변수 데이터프레임 (예: 소멸위험등급 포함)
-# parameter_integrate: 독립 변수 데이터프레임
+# Load data (using example data)
+# parameter_integrate_p: Dependent variable data frame (e.g. including extinction risk level)
+# parameter_integrate: independent variable data frame
 
-# 종속 변수 설정
+# Setting dependent variables
 y = parameter_integrate_p['소멸위험등급']
 
-# 독립 변수 데이터프레임 (bias 추가)
+# Independent variable data frame (bias added)
 X = parameter_integrate.values
 
 # 1. Standard Scaler
 scaler_standard = StandardScaler()
 X_standard_scaled = scaler_standard.fit_transform(X)
-X_standard_scaled = sm.add_constant(X_standard_scaled)  # Bias 추가
+X_standard_scaled = sm.add_constant(X_standard_scaled)  # Add bias
 
 model_standard = sm.OLS(y, X_standard_scaled)
 results_standard = model_standard.fit()
@@ -551,7 +551,7 @@ print(results_standard.summary())
 # 2. MinMax Scaler
 scaler_minmax = MinMaxScaler()
 X_minmax_scaled = scaler_minmax.fit_transform(X)
-X_minmax_scaled = sm.add_constant(X_minmax_scaled)  # Bias 추가
+X_minmax_scaled = sm.add_constant(X_minmax_scaled)  # Add bias
 
 model_minmax = sm.OLS(y, X_minmax_scaled)
 results_minmax = model_minmax.fit()
@@ -561,7 +561,7 @@ print(results_minmax.summary())
 # 3. Robust Scaler
 scaler_robust = RobustScaler()
 X_robust_scaled = scaler_robust.fit_transform(X)
-X_robust_scaled = sm.add_constant(X_robust_scaled)  # Bias 추가
+X_robust_scaled = sm.add_constant(X_robust_scaled)  # Add bias
 
 model_robust = sm.OLS(y, X_robust_scaled)
 results_robust = model_robust.fit()
@@ -774,20 +774,20 @@ rc('font', family=font_name)
 
 import matplotlib.pyplot as plt
 
-# 데이터
+# data
 categories = ['GBM', 'LGBM']
 values = [89.2, 91.3]
 
-# 바차트 생성
+# Create a bar chart
 plt.bar(categories, values)
 
-# 그래프 제목 및 축 레이블 설정
+# Set graph title and axis labels
 plt.title('분류모델 성능비교')
 plt.xlabel('모델종류')
 plt.ylabel('분류정확도(%)')
 plt.ylim(85, 93)
 plt.savefig('C:/Users/Shin/Documents/Final_Project/Mysql/data/성능비교.png')
-# 그래프 표시
+# graph display
 plt.show()
 
 
