@@ -63,7 +63,8 @@ I focus on deriving actionable insights through rigorous statistical analysis an
     * Achieved high classification accuracy (F1-Score optimized) for identifying high-risk regions.
     * Identified key factors contributing to population decline (e.g., lack of medical/educational infrastructure).
 * **Tech:** `Python Scikit-learn', `VIF Analysis`, 'Cross Validation'
-* 
+
+
 ![QQ-Plot: Residuals Of Education Related Data]
 <img width="592" height="455" alt="Education_Data" src="https://github.com/user-attachments/assets/ecd11d10-2ab3-4aa0-b7bc-a9463afdc55a" />
 
