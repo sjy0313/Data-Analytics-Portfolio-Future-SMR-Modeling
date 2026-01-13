@@ -8,7 +8,7 @@ I focus on deriving actionable insights through rigorous statistical analysis an
 ## Tech Stack
 - **Languages:** Python (Pandas, NumPy, Scikit-learn), SQL
 - **Visualization:** PowerBI, Matplotlib, Seaborn, Plotly
-- **Machine Learning:** Regression/Multiple Linear/Non-Linear Regression, Classification (GBM/LGBM, Random Forest, RandomSearchCV), Reinforcement Learning
+- **Machine Learning:** Regression/Multiple Linear/Non-Linear Regression(Log transformation), Classification (GBM/LGBM, Random Forest, RandomSearchCV), Reinforcement Learning(RNN,CNN)
 - **Tools:** Git, Jupyter Notebook, VS Code, Google Colab, Spyder(Anaconda)
 
 ---
@@ -23,29 +23,32 @@ I focus on deriving actionable insights through rigorous statistical analysis an
     * **Correlation Analysis:** Calculated Pearson correlation coefficients to measure the strength of the relationship between pandemic waves and book category sales.
     * **Descriptive Statistics:** Summarized large datasets to identify central tendencies and dispersion in consumer behavior.
 * **Key Results:**
-    * Identified a surge in "Self-help" and "Psychology" book sales, correlating with the social phenomenon of "Corona Blue."
+    * Identified a surge in "Self-Development" and "Economics/Business" book sales, correlating with the social phenomenon of "Corona Blue and surge in the value of real assets"
     * Provided data-driven marketing insights for online bookstores.
 * **Tech:** `Python(pandas/Numpy/Selenium)`, `PowerBI`
-
+ **Data_Reference:** https://www.kyobobook.co.kr/ (Korean Online Bookstore holding Seond largest market share in Korea)
 ![Consumer Trend PowerBI]
 <img width="2198" height="1244" alt="Consumer_trend_PowerBI" src="https://github.com/user-attachments/assets/1fa4a2f7-5749-48e9-a6de-6eef1db61357" />
 
+---
 ### 2. 🏙️ Urban Polarization Analysis (Spatial Big Data)
-**"Analyzing the gap between housing prices and infrastructure in the Chungcheong region"**
+**"Analyzing the gap between housing prices and infrastructure between Chungcheongdo region and sejong"**
 
 * **Summary:** Investigated the correlation between housing transaction indices and urban infrastructure (schools, hospitals) using spatial big data.
 * **Applied Mathematics & Statistics Connection:**
     * **Regression Analysis:** Built linear regression models to quantify the relationship between infrastructure accessibility and housing prices.
-                            **PCA(Principal Component Analysis)**,**Confusion Matrix", "One-hot encoding"  metrics to validate predictive power.
+                            **PCA(Principal Component Analysis)**,**Confusion Matrix", "One-hot encoding/Label encoding"  metrics to validate predictive power.
     * **Model Evaluation:** assessed model performance using **R-squared**, **MSE (Mean Squared Error)**, 
     * **Spatial Statistics:** Analyzed spatial distribution patterns of wealth and infrastructure.
 * **Key Results:**
     * **R² = 0.968**: Proved a strong positive correlation between infrastructure density and housing prices.
     * Visualized the "Polarization" phenomenon where resources are heavily concentrated in specific urban clusters (Sejong/Daejeon).
-* **Tech:** `Python(Tensorflow/scipy/matplotlib/plotly`, `Spatial Analysis`, `Regression Modeling`, 'MySQL'
+* **Tech:** `Python(Tensorflow/scipy/matplotlib/plotly)`, `Regression Modeling`, 'MySQL'
+* **Data_Reference:**`Spatial Analysis(https://hogangnono.com/apt/5fd46/0/2)-> Hogangnono is a web service that provides detailed real estate information for property buyers and investors`
 
-![Urban Polarization Result](./Images/urban_polarization_map.png)
-*(Please insert your map visualization or regression graph here)*
+![Normality test with education_related data(number of schools/number of studnet per educator/number of student per private institution]
+<img width="1435" height="525" alt="Real-estate_VS_Distance(Amenities)" src="https://github.com/user-attachments/assets/3aedb0d2-cdee-4bac-84a6-15023345879c" />
+
 ---
 ### 3. 📉 Local Extinction Crisis Analysis & Prediction
 **"Predicting regional extinction risks using Machine Learning Ensemble Models"**
@@ -58,30 +61,19 @@ I focus on deriving actionable insights through rigorous statistical analysis an
 * **Key Results:**
     * Achieved high classification accuracy (F1-Score optimized) for identifying high-risk regions.
     * Identified key factors contributing to population decline (e.g., lack of medical/educational infrastructure).
-* **Tech:** `Python`, `Scikit-learn`, `VIF Analysis`
-
-![Local Extinction Result](./Images/local_extinction_result.png)
-*(Please insert your confusion matrix or feature importance plot here)*
+* **Tech:** `Python Scikit-learn', `VIF Analysis`, 'Cross Validation'
+![QQ-Plot: Residuals Of Education Related Data]
+<img width="592" height="455" alt="Education_Data" src="https://github.com/user-attachments/assets/ecd11d10-2ab3-4aa0-b7bc-a9463afdc55a" />
+![An ER-Diagram illustrates entities and their relationships in a database, whereas the relationship between a dependent variable and independent variables]
+<img width="942" height="845" alt="ERD_DB" src="https://github.com/user-attachments/assets/f94f17b1-b6a3-4495-9b56-6f2809dca86a" />
 
 ---
-
-
-
-
-### 4. ⚛️ SMR Construction Financial Risk Optimization
+  
+### Further_Project: ⚛️ SMR(Small Module Reactor) Construction Financial Risk Optimization
 **"Reinforcement Learning (RL) model for minimizing financial risks"**
 
-* **Summary:** Developed a Probabilistic Goal Setting-based RL model to optimize investment efficiency in Small Modular Reactor (SMR) construction projects.
-* **Applied Mathematics & Statistics Connection:**
-    * **Reinforcement Learning (MDP):** Modeled the construction process as a Markov Decision Process (State, Action, Reward) to solve optimization problems under uncertainty.
-    * **Stochastic Modeling:** Incorporated probabilistic distributions to simulate various financial risk scenarios (Monte Carlo Simulation concepts).
-* **Key Results:**
-    * Proposed an optimal decision-making policy that balances risk minimization and profit maximization.
-* **Tech:** `Python`, `Reinforcement Learning`
-
-![SMR Model Structure](./Images/smr_model_diagram.png)
-*(Please insert your model diagram or reward graph here)*
-
+* **Goal:** Developed a Probabilistic Goal Setting-based RL model to optimize investment efficiency in Small Modular Reactor (SMR) construction projects.
+* **Core Competency: Applied Mathematics & Statistics Connection + mathematical and engineering skills:**
 ---
 
-### 📫 Contact
+### Contact: allfalls0203@gmail.com
