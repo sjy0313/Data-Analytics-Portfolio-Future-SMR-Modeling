@@ -28,7 +28,7 @@ I focus on deriving actionable insights through rigorous statistical analysis an
 * **Tech:** `Python(pandas/Numpy/Selenium)`, `PowerBI`
  **Data_Reference:** https://www.kyobobook.co.kr/ (Korean Online Bookstore holding Seond largest market share in Korea)
   
-![Consumer Trend PowerBI]
+["Consumer Sentiment Analysis Through Bestsellers"]
 <img width="2198" height="1244" alt="Consumer_trend_PowerBI" src="https://github.com/user-attachments/assets/1fa4a2f7-5749-48e9-a6de-6eef1db61357" />
 
 ---
@@ -47,7 +47,7 @@ I focus on deriving actionable insights through rigorous statistical analysis an
 * **Tech:** `Python(Tensorflow/scipy/matplotlib/plotly)`, `Regression Modeling`, 'MySQL'
 * **Data_Reference:**`Spatial Analysis(https://hogangnono.com/apt/5fd46/0/2)-> Hogangnono is a web service that provides detailed real estate information for property buyers and investors`
 
-![Normality test with education_related data(number of schools/number of studnet per educator/number of student per private institution]
+[“Examining the Linear Relationship Between Infrastructure Distance and Property Prices”]
 <img width="1435" height="525" alt="Real-estate_VS_Distance(Amenities)" src="https://github.com/user-attachments/assets/3aedb0d2-cdee-4bac-84a6-15023345879c" />
 
 ---
@@ -65,11 +65,11 @@ I focus on deriving actionable insights through rigorous statistical analysis an
 * **Tech:** `Python Scikit-learn', `VIF Analysis`, 'Cross Validation'
 
 
-![QQ-Plot: Residuals Of Education Related Data]
+["Normality test with education_related data(QQ-Plot)(number of schools/number of studnet per educator/number of student per private institution etc.")]
 <img width="592" height="455" alt="Education_Data" src="https://github.com/user-attachments/assets/ecd11d10-2ab3-4aa0-b7bc-a9463afdc55a" />
 
 
-![An ER-Diagram illustrates entities and their relationships in a database, whereas the relationship between a dependent variable and independent variables]
+["An ER-Diagram illustrates entities and their relationships in a database, whereas the relationship between a dependent variable and independent variables"]
 <img width="942" height="845" alt="ERD_DB" src="https://github.com/user-attachments/assets/f94f17b1-b6a3-4495-9b56-6f2809dca86a" />
 
 ---
