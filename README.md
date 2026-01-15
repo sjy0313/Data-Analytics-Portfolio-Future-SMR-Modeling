@@ -50,6 +50,12 @@ I focus on deriving actionable insights through rigorous statistical analysis an
 [“Examining the Linear Relationship Between Infrastructure Distance and Property Prices”]
 <img width="1435" height="525" alt="Real-estate_VS_Distance(Amenities)" src="https://github.com/user-attachments/assets/3aedb0d2-cdee-4bac-84a6-15023345879c" />
 
+
+[“Visualizing the linear correlation between Sejong City’s population density and quantity of infrastructure components with Matplotlib.”]
+<img width="432" height="288" alt="pop_dens" src="https://github.com/user-attachments/assets/9c8b4559-9ac4-4bd1-b9d2-5a1529accbc7" />
+
+
+
 ---
 ### 3. 📉 Local Extinction Crisis Analysis & Prediction
 **"Predicting regional extinction risks using Machine Learning Ensemble Models"**
